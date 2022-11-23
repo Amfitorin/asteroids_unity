@@ -1,0 +1,4 @@
+{
+	"name": "Editor",
+	"references":[ "GUID:a76f482a350128c4fbc07f8d58412e4e", "GUID:97def1539f1d0df4b9cdfc56cca18b1a" ]
+}
