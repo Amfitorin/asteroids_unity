@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 
@@ -7,5 +8,8 @@ namespace CoreMechanics.Scene
     {
         void LoadScene(string sceneName, LoadSceneMode sceneMode);
         UniTask LoadSceneAsync(string sceneName, LoadSceneMode sceneMode);
+
+        UniTask LoadMainSceneAsync();
+        UniTask LoadScreenSceneAsync();
     }
 }

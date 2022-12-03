@@ -1,0 +1,37 @@
+{
+    "name": "GameplayMechanics",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a76f482a350128c4fbc07f8d58412e4e",
+        "GUID:97def1539f1d0df4b9cdfc56cca18b1a",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:5c01796d064528144a599661eaab93a6",
+        "GUID:805912e66f4e1354694264d2dac4f21a",
+        "GUID:87b5f174c1f644d5a9bceb5cd4b6492d",
+        "GUID:3aa7d6caf84446daa563d57c0f1dac4c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "EmbeddedLinux",
+        "GameCoreScarlett",
+        "GameCoreXboxOne",
+        "LinuxStandalone64",
+        "CloudRendering",
+        "Lumin",
+        "PS4",
+        "PS5",
+        "Stadia",
+        "Switch",
+        "tvOS",
+        "WSA",
+        "WebGL",
+        "XboxOne"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

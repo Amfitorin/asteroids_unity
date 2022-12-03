@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 553084052}
   - component: {fileID: 553084053}
+  - component: {fileID: 553084054}
   m_Layer: 0
   m_Name: preloader
   m_TagString: Untagged
@@ -169,3 +170,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameplayScene: mainGame
   _uiScene: screenScene
+  _eventProvider: {fileID: 553084054}
+--- !u!114 &553084054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553084051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 326435dec19646949de873a02793c8de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
