@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Core.Utils.Extensions;
+using CoreMechanics.Managers.Configs;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -8,9 +9,14 @@ namespace CoreMechanics.Loaders
 {
     public abstract class AssetLoaderBase : IAssetLoader
     {
+	    private readonly IConfigManager _configsManager;
 	    private const string AssetsPath = "Assets/Bundles/";
 	    private const string ResourcesPath = "Assets/Resources/";
 
+	    protected AssetLoaderBase()
+	    {
+		    _configsManager = new ConfigManagerFabric().GetManager();
+	    }
 
 	    public bool TryLoadResource<T>(string path, out T res) where T : Object
 		{
@@ -34,6 +40,12 @@ namespace CoreMechanics.Loaders
 			Debug.LogError("Asset from bundle can't be loaded");
 			return false;
 		}
+
+	    public bool TryLoadConfig<T>(string path, out T res) where T : ConfigBase
+	    {
+		    res = _configsManager.Load<T>(path);
+		    return true;
+	    }
 
 	    public abstract T Load<T>(string assetPath) where T : Object;
 

@@ -2,7 +2,13 @@ using System;
 using System.Reflection;
 using Core.Utils.Extensions;
 using CoreMechanics.ObjectLinks;
+using CoreMechanics.ObjectLinks.Configs;
 using CoreMechanics.ObjectLinks.UnityObjectLink;
+using Model.Configs.Enemy;
+using Model.Configs.Gun;
+using Model.Configs.Level;
+using Model.Configs.Player;
+using Model.Configs.Pool;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,6 +16,14 @@ namespace Editor.PropertyDrawers
 {
   [CustomPropertyDrawer(typeof(GameObjectLink))]
   [CustomPropertyDrawer(typeof(SpriteLink))]
+  [CustomPropertyDrawer(typeof(AsteroidConfigLink))]
+  [CustomPropertyDrawer(typeof(BulletConfigLink))]
+  [CustomPropertyDrawer(typeof(BulletGunConfigLink))]
+  [CustomPropertyDrawer(typeof(LaserGunConfigLink))]
+  [CustomPropertyDrawer(typeof(NloConfigLink))]
+  [CustomPropertyDrawer(typeof(PlayerConfigLink))]
+  [CustomPropertyDrawer(typeof(LevelsConfigLink))]
+  [CustomPropertyDrawer(typeof(PoolSettingsConfigLink))]
 	public class ObjectLinkPropertyDrawer : PropertyDrawer
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

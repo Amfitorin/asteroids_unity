@@ -1,16 +1,17 @@
 ﻿// Author: Daniele Giardini - http://www.demigiant.com
 // Created: 2018/07/13
 
-using System;
-using UnityEngine;
+using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using UnityEngine;
+
 //#if UNITY_2018_1_OR_NEWER && (NET_4_6 || NET_STANDARD_2_0)
 //using Task = System.Threading.Tasks.Task;
 //#endif
 
 #pragma warning disable 1591
-namespace DG.Tweening
+namespace DoTween.Modules
 {
     /// <summary>
     /// Shortcuts/functions that are not strictly related to specific Modules

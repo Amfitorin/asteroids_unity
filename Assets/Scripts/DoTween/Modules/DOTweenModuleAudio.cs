@@ -2,16 +2,18 @@
 // Created: 2018/07/13
 
 #if true // MODULE_MARKER
-using System;
+#if UNITY_5 || UNITY_2017_1_OR_NEWER
+using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
-#if UNITY_5 || UNITY_2017_1_OR_NEWER
-using UnityEngine.Audio; // Required for AudioMixer
+using UnityEngine.Audio;
+
+// Required for AudioMixer
 #endif
 
 #pragma warning disable 1591
-namespace DG.Tweening
+namespace DoTween.Modules
 {
 	public static class DOTweenModuleAudio
     {

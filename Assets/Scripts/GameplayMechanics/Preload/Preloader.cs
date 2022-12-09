@@ -1,6 +1,7 @@
 using Core.Utils.Attributes;
 using Core.Utils.Extensions;
 using Gameplay.App;
+using GameplayMechanics.Configs;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -15,11 +16,14 @@ namespace GameplayMechanics.Preload
         private string _uiScene;
 
         [SerializeField]
+        private ConfigProvider _configs;
+
+        [SerializeField]
         private AppEventProvider _eventProvider;
 
         private async void Awake()
         {
-            await AppManager.Instance.PreloadController.InitGame(_eventProvider, _gameplayScene, _uiScene);
+            await AppManager.Instance.PreloadController.InitGame(_eventProvider, _gameplayScene, _uiScene, _configs);
         }
 
         private void OnValidate()

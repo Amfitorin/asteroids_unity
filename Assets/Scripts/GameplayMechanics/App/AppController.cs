@@ -3,6 +3,7 @@ using CoreMechanics.Scene;
 using Cysharp.Threading.Tasks;
 using Gameplay.App;
 using Gameplay.Gameplay;
+using GameplayMechanics.Configs;
 using GameplayMechanics.MainMechanic;
 using UnityEngine;
 
@@ -10,15 +11,18 @@ namespace GameplayMechanics.App
 {
     public class AppController : IAppController
     {
+        private readonly ConfigProvider _configProvider;
         private readonly GameObjectLink _gameplayInitPrefab;
         private readonly GameObjectLink _screenInitPrefab;
 
         private GameplayMechanic _mainMechanic;
 
-        public AppController(IAppEventProvider eventProvider, ISceneController sceneController)
+        public AppController(IAppEventProvider eventProvider, ISceneController sceneController,
+            ConfigProvider configProvider)
         {
+            _configProvider = configProvider;
             SceneController = sceneController;
-           AppEventProvider = eventProvider;
+            AppEventProvider = eventProvider;
         }
 
         public ISceneController SceneController { get; }
@@ -28,8 +32,8 @@ namespace GameplayMechanics.App
         {
             await SceneController.LoadMainSceneAsync();
             var controller = Object.FindObjectOfType<GameplayController>();
-            _mainMechanic = new GameplayMechanic(controller);
-            await SceneController.LoadScreenSceneAsync();
+            _mainMechanic = new GameplayMechanic(this, controller, _configProvider);
+            // await SceneController.LoadScreenSceneAsync();
         }
     }
 }

@@ -1,11 +1,15 @@
 using System;
-using CoreMechanics.ObjectLinks.UnityObjectLink;
+using Model.Configs.Gun;
+using UnityEngine;
 
 namespace Model.Gun
 {
     [Serializable]
-    public class BulletGunSettings
+    public class BulletGunSettings : GunSettings
     {
-        public SpriteLink BulletSprite;
+        [SerializeField]
+        private BulletConfigLink _bullet;
+
+        public BulletConfigLink Bullet => _bullet;
     }
 }

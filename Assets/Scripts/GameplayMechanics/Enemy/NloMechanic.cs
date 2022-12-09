@@ -1,5 +1,4 @@
 using System.Threading;
-using Cysharp.Threading.Tasks;
 using Gameplay.Gameplay;
 using GameplayMechanics.MainMechanic;
 
@@ -8,7 +7,7 @@ namespace GameplayMechanics.Enemy
     public class NloMechanic : IGameplayMechanic
     {
         private readonly GameplayController _controller;
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
 
         public NloMechanic(GameplayController controller, CancellationTokenSource cancellationTokenSource)
         {
@@ -16,24 +15,9 @@ namespace GameplayMechanics.Enemy
             _cancellationTokenSource = cancellationTokenSource;
         }
 
-        public async UniTaskVoid Update()
+        public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
-            
-        }
-
-        public async UniTaskVoid LateUpdate()
-        {
-            
-        }
-
-        public async UniTaskVoid Pause(bool state)
-        {
-            
-        }
-
-        public async UniTaskVoid StartGame()
-        {
-            
+            _cancellationTokenSource = tokenSource;
         }
     }
 }

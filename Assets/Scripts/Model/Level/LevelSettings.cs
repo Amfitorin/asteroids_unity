@@ -1,17 +1,35 @@
 using System;
-// ReSharper disable InconsistentNaming
+using UnityEngine;
+
 
 namespace Model.Level
 {
     [Serializable]
     public class LevelSettings
     {
-        public int Level;
+        [SerializeField]
+        private int _level;
 
-        public int BigEnemyCount;
+        [SerializeField]
+        private int _bigEnemyCount;
 
-        public int MediumEnemyCount;
+        [SerializeField]
+        private int _mediumEnemyCount;
 
-        public int SmallEnemyCount;
+        [SerializeField]
+        private int _smallEnemyCount;
+
+        [SerializeField]
+        private EnemySettings _enemies;
+
+        public int Level => _level;
+
+        public int BigEnemyCount => _bigEnemyCount;
+
+        public int MediumEnemyCount => _mediumEnemyCount;
+
+        public int SmallEnemyCount => _smallEnemyCount;
+
+        public EnemySettings Enemies => _enemies;
     }
 }

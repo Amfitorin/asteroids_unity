@@ -1,35 +1,33 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Gameplay.Gameplay;
+using Gameplay.ViewApi.CameraView;
+using Gameplay.ViewApi.Player;
+using GameplayMechanics.Configs;
+using Model.Configs.Player;
 
 namespace GameplayMechanics.PLayers
 {
     public class PLayerMechanic : IPlayerMechanic
     {
         private readonly GameplayController _controller;
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
+        private readonly PLayerConfig _playerConfig;
+        private readonly IPlayerView _playerView;
+        private readonly ICameraView _cameraView;
 
-        public PLayerMechanic(GameplayController controller, CancellationTokenSource cancellationTokenSource)
+        public PLayerMechanic(GameplayController controller, CancellationTokenSource cancellationTokenSource, ConfigProvider provider)
         {
             _controller = controller;
             _cancellationTokenSource = cancellationTokenSource;
+            _playerView = controller.PlayerView;
+            _playerConfig = provider.PLayerConfig;
+            _cameraView = controller.Camera;
         }
 
-        public async UniTaskVoid Update()
+        public async UniTask StartGame()
         {
-        }
-
-        public async UniTaskVoid LateUpdate()
-        {
-        }
-
-        public async UniTaskVoid Pause(bool state)
-        {
-        }
-
-        public async UniTaskVoid StartGame()
-        {
-            
+            await _playerView.SpawnPLayer(_cameraView.ScreenCenter);
         }
 
         public void Attack()
@@ -38,6 +36,11 @@ namespace GameplayMechanics.PLayers
 
         public void UseExtraGun()
         {
+        }
+        
+        public void SetupTokenSource(CancellationTokenSource tokenSource)
+        {
+            _cancellationTokenSource = tokenSource;
         }
     }
 }

@@ -1,11 +1,13 @@
-using Model.EnvObject;
+using Gameplay.ViewApi.CameraView;
+using Gameplay.ViewApi.Player;
+using Model.Configs;
 
 namespace Gameplay.ViewApi.Gameplay
 {
     public interface IGameplayController
     {
-        void LoadPlayer();
-        void LoadNlo();
-        void LoadAsteroid(AsteroidType type);
+        IPlayerView PlayerView { get; }
+        ICameraView Camera { get; }
+        void StartGame(IConfigProvider configProvider);
     }
 }

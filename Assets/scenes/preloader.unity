@@ -170,6 +170,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameplayScene: mainGame
   _uiScene: screenScene
+  _configs:
+    _levels:
+      _path: Assets/Configs/Levels/ConfigLEvel.asset
+    _player:
+      _path: Assets/Configs/PLayer/PlayerConfig.asset
   _eventProvider: {fileID: 553084054}
 --- !u!114 &553084054
 MonoBehaviour:

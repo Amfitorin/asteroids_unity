@@ -1,5 +1,8 @@
+using Gameplay.Player;
+using Gameplay.ViewApi.CameraView;
 using Gameplay.ViewApi.Gameplay;
-using Model.EnvObject;
+using Gameplay.ViewApi.Player;
+using Model.Configs;
 using Model.Level;
 using UnityEngine;
 
@@ -14,24 +17,18 @@ namespace Gameplay.Gameplay
         private Transform _playerRoot;
 
         [SerializeField]
-        private LevelSettings[] _levels;
+        private Camera _camera;
 
-        [SerializeField]
-        private PrefabSettings _prefabs;
+        private LevelSettings _currentLevel;
 
-        public void LoadPlayer()
+        public IPlayerView PlayerView { get; private set; }
+
+        public ICameraView Camera { get; private set; }
+
+        public void StartGame(IConfigProvider configProvider)
         {
-            
-        }
-
-        public void LoadNlo()
-        {
-            
-        }
-
-        public void LoadAsteroid(AsteroidType type)
-        {
-            
+            Camera = new CameraView.CameraView(_camera);
+            PlayerView = new PlayerView(_playerRoot, Camera);
         }
     }
 }
