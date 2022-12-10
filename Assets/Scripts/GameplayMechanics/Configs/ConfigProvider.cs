@@ -2,6 +2,7 @@ using System;
 using Model.Configs;
 using Model.Configs.Level;
 using Model.Configs.Player;
+using Model.Configs.Pool;
 using UnityEngine;
 
 namespace GameplayMechanics.Configs
@@ -15,7 +16,11 @@ namespace GameplayMechanics.Configs
         [SerializeField]
         private PlayerConfigLink _player;
 
+        [SerializeField]
+        private PoolSettingsConfigLink _poolSettings;
+
         public PLayerConfig PLayerConfig => _player;
         public LevelsConfig LevelsConfig => _levels;
+        public PoolSettingsConfig PoolSettings => _poolSettings;
     }
 }

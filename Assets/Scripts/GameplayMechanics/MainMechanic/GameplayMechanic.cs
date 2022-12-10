@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
+using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using Gameplay.Gameplay;
@@ -14,16 +15,18 @@ namespace GameplayMechanics.MainMechanic
     {
         private readonly IAppController _appController;
         private readonly ConfigProvider _configProvider;
+        private readonly IObjectSpawnSystem _objectSpawnSystem;
         private readonly GameplayController _controller;
         private List<IGameplayMechanic> _gameplayMechanics;
         private CancellationTokenSource _tokenSource;
 
         public GameplayMechanic(IAppController appController, GameplayController controller,
-            ConfigProvider configProvider)
+            ConfigProvider configProvider, IObjectSpawnSystem objectSpawnSystem)
         {
             _appController = appController;
             _controller = controller;
             _configProvider = configProvider;
+            _objectSpawnSystem = objectSpawnSystem;
             _tokenSource = new CancellationTokenSource();
             StartGame().Forget();
         }
