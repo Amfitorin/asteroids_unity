@@ -8,9 +8,6 @@ namespace CoreMechanics.ObjectLinks.Configs
     public class ConfigLink<T> : ConfigLinkAbstract<T> where T : ConfigBase
     {
         [CanBeNull]
-        public T Config
-        {
-            get { return Load(); }
-        }
+        public T Config => Load();
     }
 }

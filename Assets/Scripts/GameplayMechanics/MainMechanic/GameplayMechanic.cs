@@ -13,8 +13,8 @@ namespace GameplayMechanics.MainMechanic
     public class GameplayMechanic : IGameplayMechanic
     {
         private readonly IAppController _appController;
-        private readonly GameplayController _controller;
         private readonly ConfigProvider _configProvider;
+        private readonly GameplayController _controller;
         private List<IGameplayMechanic> _gameplayMechanics;
         private CancellationTokenSource _tokenSource;
 
@@ -75,13 +75,9 @@ namespace GameplayMechanics.MainMechanic
         public async UniTaskVoid Pause(bool state)
         {
             if (state)
-            {
                 _tokenSource.Cancel();
-            }
             else
-            {
                 SetupTokenSource(new CancellationTokenSource());
-            }
 
             await UniTask.Yield();
         }

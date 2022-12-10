@@ -5,6 +5,5 @@ namespace Gameplay.Gun
 {
     public class BulletGun : MonoBehaviour, IGun
     {
-        
     }
 }

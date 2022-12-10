@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Model.Configs.Gun
 {
-    
     [CreateAssetMenu(menuName = "Configs/Bullet")]
     public class BulletConfig : ConfigBase
     {
@@ -20,8 +19,9 @@ namespace Model.Configs.Gun
 
         public float Speed => _speed;
     }
-    
+
     [Serializable]
     public class BulletConfigLink : ConfigLink<BulletConfig>
-    {}
+    {
+    }
 }

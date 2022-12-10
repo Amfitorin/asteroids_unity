@@ -7,8 +7,9 @@ namespace Model.CustomTypes
     [Serializable]
     public struct RangeFloat
     {
-        public static readonly RangeFloat Empty = new RangeFloat();
-        public static readonly RangeFloat One = new RangeFloat
+        public static readonly RangeFloat Empty = new();
+
+        public static readonly RangeFloat One = new()
         {
             _minValue = 0f,
             _maxValue = 1f
@@ -16,6 +17,7 @@ namespace Model.CustomTypes
 
         [SerializeField]
         private float _minValue;
+
         [SerializeField]
         private float _maxValue;
 

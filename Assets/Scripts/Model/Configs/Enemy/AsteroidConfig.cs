@@ -2,7 +2,6 @@ using System;
 using CoreMechanics.Managers.Configs;
 using CoreMechanics.ObjectLinks.Configs;
 using CoreMechanics.ObjectLinks.UnityObjectLink;
-using Model.EnvObject;
 using UnityEngine;
 
 namespace Model.Configs.Enemy
@@ -33,5 +32,6 @@ namespace Model.Configs.Enemy
 
     [Serializable]
     public class AsteroidConfigLink : ConfigLink<AsteroidConfig>
-    {}
+    {
+    }
 }

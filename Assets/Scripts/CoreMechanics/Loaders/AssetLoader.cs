@@ -7,88 +7,84 @@ using UnityEngine;
 
 namespace CoreMechanics.Loaders
 {
-   public sealed class AssetLoader : AssetLoaderBase
-	{
-		private class PackInfo
-		{
-			public string FileName;
-			public Dictionary<string, ulong> Offsets;
-		}
-		
-		private readonly Dictionary<string, AssetBundle> _assetsList = new();
-		private readonly Dictionary<string, AssetBundle> _bundles = new();
-		private readonly Dictionary<string, AssetBundleInfo> _metadata = new();
+    public sealed class AssetLoader : AssetLoaderBase
+    {
+        private readonly Dictionary<string, AssetBundle> _assetsList = new();
+        private readonly Dictionary<string, AssetBundle> _bundles = new();
 
-		private IDisposable _metadataLoader;
-		private PackInfo[] _externalPackInfos;
+        private readonly IAssetLoaderCache _loaderCache;
+        private readonly Dictionary<string, AssetBundleInfo> _metadata = new();
+        private PackInfo[] _externalPackInfos;
 
-		private readonly IAssetLoaderCache _loaderCache;
+        private IDisposable _metadataLoader;
 
-		public AssetLoader(IAssetLoaderCache loaderCache)
-		{
-			_loaderCache = loaderCache;
-		}
-		
+        public AssetLoader(IAssetLoaderCache loaderCache)
+        {
+            _loaderCache = loaderCache;
+        }
 
-		public override void Release()
-		{
-			if (_metadataLoader != null)
-			{
-				_metadataLoader.Dispose();
-				_metadataLoader = null;
-			}
-		}
 
-		public override T Load<T>(string path)
-		{
-			if (path.IsNullOrEmpty())
-				return null;
+        public override void Release()
+        {
+            if (_metadataLoader != null)
+            {
+                _metadataLoader.Dispose();
+                _metadataLoader = null;
+            }
+        }
 
-			path = GetAssetPath(path);
-			var obj = _loaderCache.GetFromCache(path) as T;
-			if (obj != null)
-				return obj;
-			
+        public override T Load<T>(string path)
+        {
+            if (path.IsNullOrEmpty())
+                return null;
 
-			if (!_loaderCache.PutToCache(path, obj))
-			{
-				Debug.LogErrorFormat("Can't load asset '{0}' with type {1} from bundle '{2}'", path, typeof(T), "");
-				return null;
-			}
+            path = GetAssetPath(path);
+            var obj = _loaderCache.GetFromCache(path) as T;
+            if (obj != null)
+                return obj;
 
-			return obj;
-		}
 
-		public override IEnumerator Load<T>(string path, Action<T> callback)
-		{
-			T obj = null;
-			if (!path.IsNullOrEmpty())
-			{
-				if (!TryLoadResource(path, out obj))
-				{
-				}
-			}
+            if (!_loaderCache.PutToCache(path, obj))
+            {
+                Debug.LogErrorFormat("Can't load asset '{0}' with type {1} from bundle '{2}'", path, typeof(T), "");
+                return null;
+            }
 
-			try
-			{
-				callback(obj);
-			}
-			catch (Exception e)
-			{
-				Debug.LogException(e);
-			}
-			yield return null;
-		}
+            return obj;
+        }
 
-		protected override bool IsAssetExists(string fullAssetName)
-		{
-			if (string.IsNullOrEmpty(fullAssetName))
-				return false;
+        public override IEnumerator Load<T>(string path, Action<T> callback)
+        {
+            T obj = null;
+            if (!path.IsNullOrEmpty())
+                if (!TryLoadResource(path, out obj))
+                {
+                }
 
-			return true;
-		}
-		
-		
-		
-	}
+            try
+            {
+                callback(obj);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+
+            yield return null;
+        }
+
+        protected override bool IsAssetExists(string fullAssetName)
+        {
+            if (string.IsNullOrEmpty(fullAssetName))
+                return false;
+
+            return true;
+        }
+
+        private class PackInfo
+        {
+            public string FileName;
+            public Dictionary<string, ulong> Offsets;
+        }
+    }
 }

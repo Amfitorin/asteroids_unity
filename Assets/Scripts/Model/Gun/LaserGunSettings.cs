@@ -14,7 +14,7 @@ namespace Model.Gun
 
         [SerializeField]
         private float _time;
-        
+
         public int MaxCount => _maxCount;
 
         public float UseDelay => _useDelay;

@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Model.Configs.Enemy
 {
     [CreateAssetMenu(menuName = "Configs/Nlo")]
-    public class NloConfig :ConfigBase
+    public class NloConfig : ConfigBase
     {
         [SerializeField]
         private GameObjectLink _prefab;
@@ -26,8 +26,9 @@ namespace Model.Configs.Enemy
 
         public BulletGunConfigLink Gun => _gun;
     }
-    
+
     [Serializable]
     public class NloConfigLink : ConfigLink<NloConfig>
-    {}
+    {
+    }
 }

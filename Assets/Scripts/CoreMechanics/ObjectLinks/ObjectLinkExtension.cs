@@ -13,7 +13,7 @@ namespace CoreMechanics.ObjectLinks
         public static T LoadInEditor<T>(this IObjectLink<T> link) where T : Object
         {
             if (link == null)
-                return default(T);
+                return default;
             var path = link.Path;
             return typeof(Component).IsAssignableFrom(typeof(T))
                 ? AssetDatabase.LoadAssetAtPath<GameObject>(path).GetComponent<T>()

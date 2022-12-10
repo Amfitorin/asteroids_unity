@@ -1,33 +1,33 @@
 {
-    "name": "CoreMechanics",
-    "rootNamespace": "",
-    "references": [
-        "GUID:a76f482a350128c4fbc07f8d58412e4e",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:5c01796d064528144a599661eaab93a6"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [
-        "EmbeddedLinux",
-        "GameCoreScarlett",
-        "GameCoreXboxOne",
-        "LinuxStandalone64",
-        "CloudRendering",
-        "Lumin",
-        "PS4",
-        "PS5",
-        "Stadia",
-        "Switch",
-        "tvOS",
-        "WSA",
-        "WebGL",
-        "XboxOne"
-    ],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "CoreMechanics",
+  "rootNamespace": "",
+  "references": [
+    "GUID:a76f482a350128c4fbc07f8d58412e4e",
+    "GUID:f51ebe6a0ceec4240a699833d6309b23",
+    "GUID:5c01796d064528144a599661eaab93a6"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [
+    "EmbeddedLinux",
+    "GameCoreScarlett",
+    "GameCoreXboxOne",
+    "LinuxStandalone64",
+    "CloudRendering",
+    "Lumin",
+    "PS4",
+    "PS5",
+    "Stadia",
+    "Switch",
+    "tvOS",
+    "WSA",
+    "WebGL",
+    "XboxOne"
+  ],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

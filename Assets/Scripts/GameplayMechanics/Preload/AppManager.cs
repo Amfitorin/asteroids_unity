@@ -1,5 +1,4 @@
 using Core.Singleton;
-using Gameplay.Loaders;
 
 namespace GameplayMechanics.Preload
 {

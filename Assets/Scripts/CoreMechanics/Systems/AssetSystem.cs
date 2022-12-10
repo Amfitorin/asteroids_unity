@@ -13,13 +13,9 @@ namespace CoreMechanics.Systems
         {
             _loaderCache = new AssetLoaderCache();
             if (Application.isEditor)
-            {
                 Loader = new EditorAssetLoader(_loaderCache);
-            }
             else
-            {
                 Loader = new AssetLoader(_loaderCache);
-            }
         }
 
         protected override void DoRelease()

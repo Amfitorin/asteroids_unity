@@ -14,8 +14,8 @@ namespace GameplayMechanics.Configs
 
         [SerializeField]
         private PlayerConfigLink _player;
-        
-        public PLayerConfig PLayerConfig  => _player;
+
+        public PLayerConfig PLayerConfig => _player;
         public LevelsConfig LevelsConfig => _levels;
     }
 }

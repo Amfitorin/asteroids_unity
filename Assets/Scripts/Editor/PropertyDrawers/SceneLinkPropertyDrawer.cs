@@ -21,30 +21,22 @@ namespace Editor.PropertyDrawers
                 else if (scene.name != property.stringValue)
                 {
                     var sceneObj = GetSceneObject(scene.name);
-                    if (sceneObj != null)
-                    {
-                        property.stringValue = scene.name;
-                    }
+                    if (sceneObj != null) property.stringValue = scene.name;
                 }
             }
             else
+            {
                 EditorGUI.LabelField(position, label.text, "Use [Scene] with strings.");
+            }
         }
 
         private SceneAsset GetSceneObject(string sceneObjectName)
         {
-            if (string.IsNullOrEmpty(sceneObjectName))
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(sceneObjectName)) return null;
 
             foreach (var editorScene in EditorBuildSettings.scenes)
-            {
                 if (editorScene.path.IndexOf(sceneObjectName, StringComparison.Ordinal) != -1)
-                {
                     return AssetDatabase.LoadAssetAtPath(editorScene.path, typeof(SceneAsset)) as SceneAsset;
-                }
-            }
 
             Debug.LogWarning(
                 $"Scene [{sceneObjectName}] cannot find in build settings");

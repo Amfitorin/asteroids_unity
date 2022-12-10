@@ -1,32 +1,32 @@
 {
-    "name": "Model",
-    "rootNamespace": "",
-    "references": [
-        "GUID:97def1539f1d0df4b9cdfc56cca18b1a",
-        "GUID:a76f482a350128c4fbc07f8d58412e4e"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [
-        "EmbeddedLinux",
-        "GameCoreScarlett",
-        "GameCoreXboxOne",
-        "LinuxStandalone64",
-        "CloudRendering",
-        "Lumin",
-        "PS4",
-        "PS5",
-        "Stadia",
-        "Switch",
-        "tvOS",
-        "WSA",
-        "WebGL",
-        "XboxOne"
-    ],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Model",
+  "rootNamespace": "",
+  "references": [
+    "GUID:97def1539f1d0df4b9cdfc56cca18b1a",
+    "GUID:a76f482a350128c4fbc07f8d58412e4e"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [
+    "EmbeddedLinux",
+    "GameCoreScarlett",
+    "GameCoreXboxOne",
+    "LinuxStandalone64",
+    "CloudRendering",
+    "Lumin",
+    "PS4",
+    "PS5",
+    "Stadia",
+    "Switch",
+    "tvOS",
+    "WSA",
+    "WebGL",
+    "XboxOne"
+  ],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

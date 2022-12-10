@@ -1,5 +1,4 @@
 using Core.Utils.Extensions;
-using CoreMechanics.Sound;
 using JetBrains.Annotations;
 using TMPro;
 using UIController.Manager;
@@ -30,10 +29,7 @@ namespace UIController.Screen
 
         protected void Awake()
         {
-            if (_windowBack != null)
-            {
-                _windowBack.color = Color.gray;
-            }
+            if (_windowBack != null) _windowBack.color = Color.gray;
         }
 
         public void SetHeader(string header)

@@ -40,8 +40,9 @@ namespace Model.Configs.Player
 
         public LaserGunConfigLink LaserGun => _laserGun;
     }
-    
+
     [Serializable]
     public class PlayerConfigLink : ConfigLink<PLayerConfig>
-    {}
+    {
+    }
 }

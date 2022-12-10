@@ -12,13 +12,58 @@ namespace UIController.Manager
         private readonly Stack<WindowData> _stackWindows = new();
 
         private readonly Dictionary<WindowBehaviour, WindowData> _windows = new();
+        private bool _isScreenOpening;
 
         private bool _isWindowOpening;
-        private bool _isScreenOpening;
         private GameObject _processWindow;
 
         private WindowData CurrentData { get; set; }
         public ScreenBehaviour CurrentScreen { get; private set; }
+
+        public void OpenScreen<TView>(GameObjectLink prefab, IScreenPresenter<TView> presenter = null,
+            bool pushCurrentToStack = true)
+            where TView : class, IScreenView
+        {
+            if (CurrentData?.Prefab == prefab)
+            {
+                if (prefab?.Resource != null)
+                    Debug.LogFormat("[WindowManager] ScreenBehaviour of {0} is already opened.", prefab.Resource.name);
+                return;
+            }
+
+            OpenScreen(prefab, new WindowViewData<TView> { Presenter = presenter }, pushCurrentToStack);
+        }
+
+        public void CloseNotAllScreens()
+        {
+            if (_stackWindows.Count == 0) return;
+
+            while (_stackWindows.Count > 1) _stackWindows.Pop();
+
+            var data = _stackWindows.Peek();
+            _stackWindows.Clear();
+            OpenScreen(data.Prefab, data, false);
+        }
+
+        public void OpenWindow<TView>(GameObjectLink prefab, IScreenPresenter<TView> presenter)
+            where TView : class, IWindowView
+        {
+            OpenWindow(null, new WindowViewData<TView>
+            {
+                ContentPrefab = prefab,
+                Presenter = presenter
+            });
+        }
+
+        public GameObjectLink GetCurrentScreen()
+        {
+            return CurrentData != null ? CurrentData.Prefab : GameObjectLink.Empty;
+        }
+
+        public void CloseAllWindows()
+        {
+            foreach (var window in _windows.ToArray()) window.Key.CloseWindow();
+        }
 
         private void OpenScreen(GameObjectLink prefabLink, WindowData windowData = null,
             bool pushCurrentToStack = true)
@@ -39,20 +84,6 @@ namespace UIController.Manager
             OpenScreenRoutine(data, pushCurrentToStack);
         }
 
-        public void OpenScreen<TView>(GameObjectLink prefab, IScreenPresenter<TView> presenter = null,
-            bool pushCurrentToStack = true)
-            where TView : class, IScreenView
-        {
-            if (CurrentData?.Prefab == prefab)
-            {
-                if (prefab?.Resource != null)
-                    Debug.LogFormat("[WindowManager] ScreenBehaviour of {0} is already opened.", prefab.Resource.name);
-                return;
-            }
-
-            OpenScreen(prefab, new WindowViewData<TView> { Presenter = presenter }, pushCurrentToStack);
-        }
-
         private void OpenScreenRoutine(WindowData data, bool pushCurrentToStack)
         {
             _isScreenOpening = true;
@@ -64,7 +95,7 @@ namespace UIController.Manager
                 CloseScreenRoutine();
             }
 
-           // var windowObject = Object.Instantiate(data.Prefab.Resource, WindowCanvas.Current.ScreensRectTransform);
+            // var windowObject = Object.Instantiate(data.Prefab.Resource, WindowCanvas.Current.ScreensRectTransform);
             var windowObject = Object.Instantiate(data.Prefab.Resource, null);
 
             var screen = windowObject.GetComponent<ScreenBehaviour>();
@@ -80,10 +111,7 @@ namespace UIController.Manager
         private void CloseScreenRoutine()
         {
             var screen = CurrentScreen;
-            if (screen == null)
-            {
-                return;
-            }
+            if (screen == null) return;
 
             DestroyCurrentScreen();
         }
@@ -91,10 +119,7 @@ namespace UIController.Manager
         private void DestroyCurrentScreen()
         {
             var screen = CurrentScreen;
-            if (screen == null)
-            {
-                return;
-            }
+            if (screen == null) return;
 
             CloseAllWindows();
             screen.AfterClose(CurrentData);
@@ -110,39 +135,10 @@ namespace UIController.Manager
             OpenScreen(data.Prefab, data, false);
         }
 
-        public void CloseNotAllScreens()
-        {
-            if (_stackWindows.Count == 0) return;
-
-            while (_stackWindows.Count > 1)
-            {
-                _stackWindows.Pop();
-            }
-
-            var data = _stackWindows.Peek();
-            _stackWindows.Clear();
-            OpenScreen(data.Prefab, data, false);
-        }
-
         public void CloseAllScreens()
         {
             _stackWindows.Clear();
             DestroyCurrentScreen();
-        }
-
-        public void OpenWindow<TView>(GameObjectLink prefab, IScreenPresenter<TView> presenter)
-            where TView : class, IWindowView
-        {
-            OpenWindow(null, new WindowViewData<TView>
-            {
-                ContentPrefab = prefab,
-                Presenter = presenter
-            });
-        }
-
-        public GameObjectLink GetCurrentScreen()
-        {
-            return CurrentData != null ? CurrentData.Prefab : GameObjectLink.Empty;
         }
 
         private void OpenWindow<TView>(GameObjectLink prefab, WindowViewData<TView> windowData)
@@ -151,11 +147,9 @@ namespace UIController.Manager
             windowData.Prefab = prefab;
 
             if (_isWindowOpening)
-            {
                 if (prefab?.Resource != null)
                     Debug.LogErrorFormat("[WindowManager] The screen or window is already opening {0}",
                         prefab.Resource.name);
-            }
 
             OpenWindowRoutine(windowData);
         }
@@ -200,20 +194,12 @@ namespace UIController.Manager
 
         private void CloseWindowRoutine(WindowBehaviour window)
         {
-            if (!_windows.TryGetValue(window, out var windowData))
-            {
-                return;
-            }
+            if (!_windows.TryGetValue(window, out var windowData)) return;
 
             var windowContent = window.WindowContentBehaviour;
             windowContent.AfterClose(windowData);
             _windows.Remove(window);
             Object.Destroy(window.gameObject);
-        }
-
-        public void CloseAllWindows()
-        {
-            foreach (var window in _windows.ToArray()) window.Key.CloseWindow();
         }
 
         protected override void Initialize()

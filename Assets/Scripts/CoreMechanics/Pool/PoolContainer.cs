@@ -31,24 +31,14 @@ namespace CoreMechanics.Pool
         public bool TryGetObject<T>(string path, out T obj) where T : Object
         {
             obj = null;
-            if (!PoolObjects.TryGetValue(path, out var elements))
-            {
-                return false;
-            }
+            if (!PoolObjects.TryGetValue(path, out var elements)) return false;
 
-            if (!elements.TryPop(out var element))
-            {
-                return false;
-            }
+            if (!elements.TryPop(out var element)) return false;
 
             if (typeof(T).IsAssignableFrom(typeof(Component)))
-            {
                 obj = element.GetComponentInChildren<T>();
-            }
             else
-            {
                 obj = element as T;
-            }
             return true;
         }
     }

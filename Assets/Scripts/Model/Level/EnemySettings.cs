@@ -10,7 +10,7 @@ namespace Model.Level
     {
         [SerializeField]
         private AsteroidSettings[] _asteroids;
-        
+
         [SerializeField]
         private NloConfigLink _nlo;
 

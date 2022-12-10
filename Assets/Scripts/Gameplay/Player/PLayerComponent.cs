@@ -13,7 +13,5 @@ namespace Gameplay.Player
 
         [SerializeField]
         private GameObjectLink _bullet;
-        
-        
     }
 }

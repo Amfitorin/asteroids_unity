@@ -1,32 +1,32 @@
 {
-    "name": "Gameplay.ViewApi",
-    "rootNamespace": "",
-    "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:8dde9aabfb604e86bc8dfc2adcd1fb62"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [
-        "EmbeddedLinux",
-        "GameCoreScarlett",
-        "GameCoreXboxOne",
-        "LinuxStandalone64",
-        "CloudRendering",
-        "Lumin",
-        "PS4",
-        "PS5",
-        "Stadia",
-        "Switch",
-        "tvOS",
-        "WSA",
-        "WebGL",
-        "XboxOne"
-    ],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Gameplay.ViewApi",
+  "rootNamespace": "",
+  "references": [
+    "GUID:f51ebe6a0ceec4240a699833d6309b23",
+    "GUID:8dde9aabfb604e86bc8dfc2adcd1fb62"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [
+    "EmbeddedLinux",
+    "GameCoreScarlett",
+    "GameCoreXboxOne",
+    "LinuxStandalone64",
+    "CloudRendering",
+    "Lumin",
+    "PS4",
+    "PS5",
+    "Stadia",
+    "Switch",
+    "tvOS",
+    "WSA",
+    "WebGL",
+    "XboxOne"
+  ],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

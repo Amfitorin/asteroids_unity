@@ -9,12 +9,12 @@ namespace Model.Gun
     {
         [SerializeField]
         private float _cooldown;
-        
+
         [SerializeField]
         private GameObjectLink _prefab;
-        
+
         public float Cooldown => _cooldown;
-        
+
         public GameObjectLink Prefab => _prefab;
     }
 }

@@ -14,7 +14,7 @@ namespace Model.Configs.Gun
 
         public BulletGunSettings Settings => _settings;
     }
-    
+
     [Serializable]
     public class BulletGunConfigLink : ConfigLink<BulletGunConfig>
     {

@@ -14,7 +14,7 @@ namespace CoreMechanics.Loaders
 
         bool TryLoadResource<T>(string path, out T res) where T : Object;
         bool TryLoadConfig<T>(string path, out T res) where T : ConfigBase;
-        
+
 
         IEnumerator Load<T>(string assetPath, Action<T> callback)
             where T : Object;

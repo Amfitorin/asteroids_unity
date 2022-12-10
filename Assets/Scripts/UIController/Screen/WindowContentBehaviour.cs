@@ -7,7 +7,7 @@ namespace UIController.Screen
     {
         [SerializeField]
         private string _headerKey;
-        
+
 
         public Action CloseWindowAction;
         public Action<string> HeaderSetAction;

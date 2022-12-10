@@ -13,20 +13,19 @@ namespace Model.Configs.Level
         [SerializeField]
         private LevelSettings[] _levels;
 
+        public LevelSettings[] Levels => _levels;
+
         protected override void OnValidate()
         {
             base.OnValidate();
             foreach (var level in _levels)
-            {
-                if (_levels.Count(x=>x.Level == level.Level) > 1)
+                if (_levels.Count(x => x.Level == level.Level) > 1)
                     Debug.LogError($"duplicate level settings {level.Level}");
-            }
         }
-
-        public LevelSettings[] Levels => _levels;
     }
-    
+
     [Serializable]
     public class LevelsConfigLink : ConfigLink<LevelsConfig>
-    {}
+    {
+    }
 }

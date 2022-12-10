@@ -1,5 +1,4 @@
 using System.Threading;
-using Cysharp.Threading.Tasks;
 using Gameplay.Gameplay;
 using GameplayMechanics.MainMechanic;
 

@@ -9,10 +9,12 @@ namespace GameplayMechanics.Preload
 {
     public class Preloader : MonoBehaviour
     {
-        [SerializeField, Scene]
+        [SerializeField]
+        [Scene]
         private string _gameplayScene;
 
-        [SerializeField, Scene]
+        [SerializeField]
+        [Scene]
         private string _uiScene;
 
         [SerializeField]

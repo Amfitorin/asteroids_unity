@@ -12,7 +12,7 @@ namespace Editor.PropertyDrawers
         {
             return EditorGUI.GetPropertyHeight(property, label, true);
         }
- 
+
         public override void OnGUI(Rect position,
             SerializedProperty property,
             GUIContent label)

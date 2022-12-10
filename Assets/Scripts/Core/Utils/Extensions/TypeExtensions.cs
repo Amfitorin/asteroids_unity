@@ -15,7 +15,7 @@ namespace Core.Utils.Extensions
             arguments = null;
             if (!generic.IsGenericTypeDefinition)
             {
-                arguments = generic.IsGenericType ? generic.GetGenericArguments() : new[] {generic};
+                arguments = generic.IsGenericType ? generic.GetGenericArguments() : new[] { generic };
                 return generic.IsAssignableFrom(type);
             }
 

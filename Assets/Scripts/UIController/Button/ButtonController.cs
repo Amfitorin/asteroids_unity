@@ -23,7 +23,7 @@ namespace UIController.Button
         [SerializeField]
         [Tooltip("Время анимации скейла")]
         private float _scaleTime;
-        
+
         [SerializeField]
         private Image _image;
 
@@ -37,6 +37,7 @@ namespace UIController.Button
         private bool _playSound = true;
 
         private Sequence _animateSequence;
+
         public void Reset()
         {
             _onClick.RemoveAllListeners();
@@ -103,7 +104,7 @@ namespace UIController.Button
             _animateSequence = DOTween.Sequence();
             _animateSequence.Join(_targetRect.transform.DOScale(Vector3.one, _scaleTime));
         }
-        
+
         public void SetText(string text)
         {
             _label.text = text;

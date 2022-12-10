@@ -8,8 +8,8 @@ namespace Gameplay.Player
 {
     public class PlayerView : IPlayerView
     {
-        private readonly Transform _playerRoot;
         private readonly ICameraView _camera;
+        private readonly Transform _playerRoot;
 
         public PlayerView(Transform playerRoot, ICameraView camera)
         {
@@ -18,9 +18,9 @@ namespace Gameplay.Player
         }
 
         public event Action Died;
+
         public async UniTask SpawnPLayer(Vector2 spawnPosition)
         {
-            
         }
     }
 }

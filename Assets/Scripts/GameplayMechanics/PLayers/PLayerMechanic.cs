@@ -10,13 +10,14 @@ namespace GameplayMechanics.PLayers
 {
     public class PLayerMechanic : IPlayerMechanic
     {
+        private readonly ICameraView _cameraView;
         private readonly GameplayController _controller;
-        private CancellationTokenSource _cancellationTokenSource;
         private readonly PLayerConfig _playerConfig;
         private readonly IPlayerView _playerView;
-        private readonly ICameraView _cameraView;
+        private CancellationTokenSource _cancellationTokenSource;
 
-        public PLayerMechanic(GameplayController controller, CancellationTokenSource cancellationTokenSource, ConfigProvider provider)
+        public PLayerMechanic(GameplayController controller, CancellationTokenSource cancellationTokenSource,
+            ConfigProvider provider)
         {
             _controller = controller;
             _cancellationTokenSource = cancellationTokenSource;
@@ -37,7 +38,7 @@ namespace GameplayMechanics.PLayers
         public void UseExtraGun()
         {
         }
-        
+
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
             _cancellationTokenSource = tokenSource;

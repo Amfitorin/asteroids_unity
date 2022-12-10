@@ -3,9 +3,8 @@ using System;
 using System.Collections;
 using System.IO;
 using Core.Utils.Extensions;
-using UnityEngine;
 using UnityEditor;
-
+using UnityEngine;
 
 namespace CoreMechanics.Loaders
 {
@@ -32,10 +31,7 @@ namespace CoreMechanics.Loaders
 
         public override T Load<T>(string path)
         {
-            if (path.IsNullOrEmpty())
-            {
-                return null;
-            }
+            if (path.IsNullOrEmpty()) return null;
 
             path = GetAssetPath(path);
             var obj = _loaderCache.GetFromCache(path) as T;

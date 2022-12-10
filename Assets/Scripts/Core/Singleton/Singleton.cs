@@ -11,7 +11,7 @@ namespace Core.Singleton
             get
             {
                 if (_instance != null) return _instance;
-                
+
                 _instance = new T();
                 _instance.Initialize();
 

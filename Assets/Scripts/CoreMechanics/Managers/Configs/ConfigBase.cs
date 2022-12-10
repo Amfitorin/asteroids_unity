@@ -7,9 +7,10 @@ namespace CoreMechanics.Managers.Configs
 {
     public abstract class ConfigBase : ScriptableObject, IEquatable<ConfigBase>
     {
-        [SerializeField, ReadOnly]
+        [SerializeField]
+        [ReadOnly]
         private string _path;
-        
+
         protected virtual void OnValidate()
         {
 #if UNITY_EDITOR
@@ -18,7 +19,14 @@ namespace CoreMechanics.Managers.Configs
             _path = AssetDatabase.GetAssetPath(this);
 #endif
         }
-        
+
+        public bool Equals(ConfigBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && _path == other._path;
+        }
+
         public static bool operator ==(ConfigBase c1, ConfigBase c2)
         {
             if (ReferenceEquals(c1, c2))
@@ -33,18 +41,11 @@ namespace CoreMechanics.Managers.Configs
             return !(c1 == c2);
         }
 
-        public bool Equals(ConfigBase other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && _path == other._path;
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((ConfigBase)obj);
         }
 
