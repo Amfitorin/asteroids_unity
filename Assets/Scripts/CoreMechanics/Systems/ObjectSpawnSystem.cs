@@ -17,7 +17,7 @@ namespace CoreMechanics.Systems
         public ObjectSpawnSystem(PoolElement[] elements, ObjectPool pool)
         {
             _pool = pool;
-            _poolObjects = elements.ToDictionary(x => x.Prefab);
+            _poolObjects = elements?.ToDictionary(x => x.Prefab) ?? new Dictionary<GameObjectLink, PoolElement>();
         }
 
         public async UniTask<T> SpawnObject<T>(GameObjectLink prefab, Transform root, Vector3 position) where T : Object
@@ -33,7 +33,7 @@ namespace CoreMechanics.Systems
             {
                 _poolSpawned.Add(spawned, poolElement);
             }
-            if (typeof(T).IsAssignableFrom(typeof(Component)))
+            if (typeof(Component).IsAssignableFrom(typeof(T)))
             {
                 return spawned.GetComponentInChildren<T>();
             }
@@ -41,12 +41,19 @@ namespace CoreMechanics.Systems
             return spawned as T;
         }
 
-        public async UniTask DestroyObject(GameObject obj)
+        public async UniTask DestroyObject<T>(T obj) where T : Object
         {
             if (_poolSpawned.TryGetValue(obj, out var pool))
             {
                 _pool.MoveToPool(pool.Prefab.Path, obj, pool.PoolType);
-                obj.SetActive(false);
+                if (typeof(Component).IsAssignableFrom(typeof(T)))
+                {
+                    (obj as Component)?.gameObject.SetActive(false);
+                }
+                else
+                {
+                    (obj as GameObject)?.SetActive(false);   
+                }
                 _poolSpawned.Remove(obj);
                 return;
             }

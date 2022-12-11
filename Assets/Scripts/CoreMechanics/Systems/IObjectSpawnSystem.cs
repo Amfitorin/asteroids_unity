@@ -7,6 +7,6 @@ namespace CoreMechanics.Systems
     public interface IObjectSpawnSystem
     {
         UniTask<T> SpawnObject<T>(GameObjectLink prefab, Transform root, Vector3 position) where T : Object;
-        UniTask DestroyObject(GameObject obj);
+        UniTask DestroyObject<T>(T obj) where T : Object;
     }
 }

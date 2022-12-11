@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e07e0d71e4846608a452c6d717d6ba1, type: 3}
-  m_Name: PlayerBulletGun 1
+  m_Name: PlayerBulletGun
   m_EditorClassIdentifier: 
   _path: Assets/Configs/Guns/PlayerBulletGun.asset
   _settings:

@@ -15,10 +15,11 @@ MonoBehaviour:
   _path: Assets/Configs/PLayer/PlayerConfig.asset
   _prefab:
     _path: Assets/Prefabs/Players/player.prefab
-  _maxSpeed: 3
-  _acceleration: 0.7
-  _slowTime: 6
+  _maxSpeed: 16
+  _acceleration: 4
+  _slowTime: 1
   _bulletGun:
     _path: Assets/Configs/Guns/PlayerBulletGun.asset
   _laserGun:
     _path: Assets/Configs/Guns/LaserGun.asset
+  _rotationSpeed: 0.94

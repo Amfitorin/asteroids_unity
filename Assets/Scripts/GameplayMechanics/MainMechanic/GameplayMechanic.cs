@@ -41,6 +41,13 @@ namespace GameplayMechanics.MainMechanic
                 new NloMechanic(_controller, _tokenSource)
             };
             await UniTask.WhenAll(_gameplayMechanics.Select(x => x.StartGame()));
+            RunUpdateLoop();
+        }
+
+        private void RunUpdateLoop()
+        {
+            Update().Forget();
+            LateUpdate().Forget();
         }
 
         public async UniTaskVoid SetupLevel(int level)
@@ -78,9 +85,14 @@ namespace GameplayMechanics.MainMechanic
         public async UniTaskVoid Pause(bool state)
         {
             if (state)
+            {
                 _tokenSource.Cancel();
+            }
             else
+            {
                 SetupTokenSource(new CancellationTokenSource());
+                RunUpdateLoop();
+            }
 
             await UniTask.Yield();
         }

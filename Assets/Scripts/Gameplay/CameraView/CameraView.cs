@@ -1,3 +1,5 @@
+using System.Linq;
+using Core.Utils.Extensions;
 using Gameplay.ViewApi.CameraView;
 using Model.CustomTypes;
 using UnityEngine;
@@ -12,14 +14,17 @@ namespace Gameplay.CameraView
         {
             _camera = camera;
             var screenCenter = _camera.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f,
-                _camera.farClipPlane - 10f));
-            screenCenter.z = ConstZ;
+                ConstZ));
             ScreenCenter = screenCenter;
-            CameraBounds = new Bounds(ScreenCenter,
-                camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0) * 2));
+            var bottomLeft = camera.ViewportToWorldPoint(Vector3.zero);
+            bottomLeft.z = _camera.nearClipPlane;
+            var topRight = camera.ViewportToWorldPoint(new Vector3(1f, 1f, 0f));
+            topRight.z = _camera.farClipPlane;
+            var size = topRight - bottomLeft;
+            ViewRect = new Bounds(ScreenCenter, size).AsRect();
         }
 
-        private float ConstZ => _camera.farClipPlane - 10f;
+        public float ConstZ => _camera.farClipPlane - 10f;
         public Vector3 ScreenCenter { get; }
 
         public Vector3 RandomScreenPoint
@@ -31,6 +36,39 @@ namespace Gameplay.CameraView
             }
         }
 
-        public Bounds CameraBounds { get; }
+        public Rect ViewRect { get; }
+
+        public bool IsObjectVisible(CornerRect rect)
+        {
+            return rect.All(x => ViewRect.Contains(x));
+        }
+
+        public Vector3 InversePosition(Vector3 position, CornerRect rect)
+        {
+            if (IsObjectVisible(rect))
+            {
+                return position;
+            }
+
+            if (rect.Rect.yMin > ViewRect.yMax)
+            {
+                position.y -= ViewRect.size.y + rect.Rect.size.y;
+            }
+            else if (rect.Rect.yMax < ViewRect.yMin)
+            {
+                position.y += ViewRect.size.y + rect.Rect.size.y;
+            }
+
+            if (rect.Rect.xMin > ViewRect.xMax)
+            {
+                position.x -= ViewRect.size.x + rect.Rect.size.x;
+            }
+            else if (rect.Rect.xMax < ViewRect.xMin)
+            {
+                position.x += ViewRect.size.x + rect.Rect.size.x;
+            }
+
+            return position;
+        }
     }
 }

@@ -28,6 +28,11 @@ namespace Model.Configs.Player
         [SerializeField]
         private LaserGunConfigLink _laserGun;
 
+        [SerializeField]
+        private float _rotationSpeed;
+
+        public float RotationSpeed => _rotationSpeed;
+
         public GameObjectLink Prefab => _prefab;
 
         public float MaxSpeed => _maxSpeed;
@@ -43,6 +48,5 @@ namespace Model.Configs.Player
 
     [Serializable]
     public class PlayerConfigLink : ConfigLink<PLayerConfig>
-    {
-    }
+    {}
 }

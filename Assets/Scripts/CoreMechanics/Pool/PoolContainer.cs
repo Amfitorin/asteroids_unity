@@ -35,7 +35,7 @@ namespace CoreMechanics.Pool
 
             if (!elements.TryPop(out var element)) return false;
 
-            if (typeof(T).IsAssignableFrom(typeof(Component)))
+            if (typeof(Component).IsAssignableFrom(typeof(T)))
                 obj = element.GetComponentInChildren<T>();
             else
                 obj = element as T;

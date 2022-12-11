@@ -29,7 +29,7 @@ namespace GameplayMechanics.App
             var pool = new ObjectPool();
             if (Application.isEditor)
             {
-                _spawnSystem = new ObjectSpawnSystem(configProvider.PoolSettings.Elements, pool);
+                _spawnSystem = new ObjectSpawnSystem(configProvider.PoolSettings != null ? configProvider.PoolSettings.Elements : null, pool);
             }
         }
 
@@ -40,6 +40,7 @@ namespace GameplayMechanics.App
         {
             await SceneController.LoadMainSceneAsync();
             var controller = Object.FindObjectOfType<GameplayController>();
+            controller.SetupSpawnSystem(_spawnSystem);
             _mainMechanic = new GameplayMechanic(this, controller, _configProvider, _spawnSystem);
             // await SceneController.LoadScreenSceneAsync();
         }
