@@ -1,6 +1,9 @@
+using System.Threading;
 using CoreMechanics.Systems;
+using Gameplay.Enemy;
 using Gameplay.Player;
 using Gameplay.ViewApi.CameraView;
+using Gameplay.ViewApi.Enemy;
 using Gameplay.ViewApi.Gameplay;
 using Gameplay.ViewApi.Player;
 using Model.Configs;
@@ -25,6 +28,10 @@ namespace Gameplay.Gameplay
 
         public IPlayerView PlayerView { get; private set; }
 
+        public INloView NloView { get; private set; }
+
+        public IAsteroidsView AsteroidsView { get; private set; }
+
         public ICameraView Camera { get; private set; }
 
         public void SetupSpawnSystem(IObjectSpawnSystem objectSpawnSystem)
@@ -32,10 +39,11 @@ namespace Gameplay.Gameplay
             _spawnSystem = objectSpawnSystem;
         }
 
-        public void StartGame(IConfigProvider configProvider)
+        public void StartGame(IConfigProvider configProvider, CancellationTokenSource tokenSource)
         {
             Camera = new CameraView.CameraView(_camera);
             PlayerView = new PlayerView(_playerRoot, Camera, _spawnSystem);
+            AsteroidsView = new AsteroidsView(_enemyRoot, Camera, _spawnSystem, tokenSource);
         }
     }
 }

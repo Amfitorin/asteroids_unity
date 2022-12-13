@@ -1,7 +1,7 @@
 using System.Linq;
 using CoreMechanics.ObjectLinks.UnityObjectLink;
-using Unity.Plastic.Newtonsoft.Json.Serialization;
 using UnityEngine;
+using Action = Unity.Plastic.Newtonsoft.Json.Serialization.Action;
 
 namespace Gameplay.Player
 {
@@ -50,6 +50,11 @@ namespace Gameplay.Player
             }
 
             return bounds;
+        }
+
+        private void OnTriggerEnter2D(Collider2D col)
+        {
+            Debug.LogError("Коллизия");
         }
     }
 }

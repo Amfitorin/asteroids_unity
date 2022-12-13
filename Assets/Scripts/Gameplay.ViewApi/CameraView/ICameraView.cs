@@ -11,5 +11,7 @@ namespace Gameplay.ViewApi.CameraView
         Rect ViewRect { get; }
         bool IsObjectVisible(CornerRect bounds);
         Vector3 InversePosition(Vector3 position, CornerRect rect);
+        Vector3 RandomPointOutsideScreenBorder { get; }
+        Vector3 RandomPointOnScreenBorder { get; }
     }
 }

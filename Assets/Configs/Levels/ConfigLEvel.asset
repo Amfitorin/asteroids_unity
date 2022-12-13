@@ -15,7 +15,7 @@ MonoBehaviour:
   _path: Assets/Configs/Levels/ConfigLEvel.asset
   _levels:
   - _level: 1
-    _bigEnemyCount: 2
+    _bigEnemyCount: 3
     _mediumEnemyCount: 0
     _smallEnemyCount: 0
     _enemies:

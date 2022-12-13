@@ -14,7 +14,7 @@ namespace CoreMechanics.Systems
         private readonly Dictionary<GameObjectLink, PoolElement> _poolObjects;
         private readonly Dictionary<Object, PoolElement> _poolSpawned = new();
 
-        public ObjectSpawnSystem(PoolElement[] elements, ObjectPool pool)
+        public ObjectSpawnSystem(IEnumerable<PoolElement> elements, ObjectPool pool)
         {
             _pool = pool;
             _poolObjects = elements?.ToDictionary(x => x.Prefab) ?? new Dictionary<GameObjectLink, PoolElement>();
@@ -33,10 +33,13 @@ namespace CoreMechanics.Systems
             {
                 _poolSpawned.Add(spawned, poolElement);
             }
+
             if (typeof(Component).IsAssignableFrom(typeof(T)))
             {
                 return spawned.GetComponentInChildren<T>();
             }
+
+            await UniTask.Yield();
 
             return spawned as T;
         }
@@ -52,13 +55,23 @@ namespace CoreMechanics.Systems
                 }
                 else
                 {
-                    (obj as GameObject)?.SetActive(false);   
+                    (obj as GameObject)?.SetActive(false);
                 }
+
                 _poolSpawned.Remove(obj);
                 return;
             }
             
-            Object.Destroy(obj);
+            if (typeof(Component).IsAssignableFrom(typeof(T)))
+            {
+                Object.Destroy((obj as Component)?.gameObject);
+            }
+            else
+            {
+                Object.Destroy(obj as GameObject);
+            }
+
+            await UniTask.Yield();
         }
     }
 }

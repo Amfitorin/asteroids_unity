@@ -15,7 +15,15 @@ MonoBehaviour:
   _path: Assets/Configs/Enemies/Asteroids/SmallAsteroid.asset
   _prefab:
     _path: Assets/Prefabs/Asteroids/smallAsteroid.prefab
-  _speed: 7
+  _speed: 3
   _shardCount: 0
   _shard:
     _path: 
+  _sprites:
+  - _path: Assets/Sprites/Asteroids/small_1.png
+  - _path: Assets/Sprites/Asteroids/small_2.png
+  - _path: Assets/Sprites/Asteroids/small_3.png
+  - _path: Assets/Sprites/Asteroids/small_4.png
+  _angleSpeed:
+    _minValue: -70
+    _maxValue: 70

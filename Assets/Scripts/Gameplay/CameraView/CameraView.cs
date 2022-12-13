@@ -32,7 +32,37 @@ namespace Gameplay.CameraView
             get
             {
                 var viewport = new Vector3(RangeFloat.One.GetRandom(), RangeFloat.One.GetRandom(), ConstZ);
-                return _camera.ViewportToScreenPoint(viewport);
+                return _camera.ViewportToWorldPoint(viewport);
+            }
+        }
+
+        public Vector3 RandomPointOnScreenBorder
+        {
+            get
+            {
+                const float borderSize = 0.1f;
+                const float doubleBorder = borderSize * 2;
+                var randomX = Random.Range(0f, doubleBorder);
+                var randomY = Random.Range(0f, doubleBorder);
+
+                var viewport = new Vector3(randomX > borderSize ? 1f - doubleBorder + randomX : randomX,
+                    randomY > borderSize ? 1f - doubleBorder + randomY : randomY, ConstZ);
+                return _camera.ViewportToWorldPoint(viewport);
+            }
+        }
+
+        public Vector3 RandomPointOutsideScreenBorder
+        {
+            get
+            {
+                const float borderSize = 0.1f;
+                const float doubleBorder = borderSize * 2;
+                var randomX = Random.Range(0f, doubleBorder);
+                var randomY = Random.Range(0f, doubleBorder);
+
+                var viewport = new Vector3(randomX > borderSize ? 1f + doubleBorder - randomX : -randomX,
+                    randomY > borderSize ? 1f + doubleBorder - randomY : -randomY, ConstZ);
+                return _camera.ViewportToWorldPoint(viewport);
             }
         }
 

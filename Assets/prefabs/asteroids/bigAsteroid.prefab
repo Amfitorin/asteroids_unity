@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2892370232125390788}
   - component: {fileID: 5601010650607633995}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mechanics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -58,7 +58,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8201759619679712336}
   - component: {fileID: 1153751415322780031}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: view
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9104845563342015124}
-  m_Layer: 0
+  - component: {fileID: -5683214394450535015}
+  m_Layer: 6
   m_Name: bigAsteroid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +158,7 @@ Transform:
   m_GameObject: {fileID: 8127397371714029181}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8201759619679712336}
@@ -165,3 +166,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-5683214394450535015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8127397371714029181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f18ca349183e4b6694826c0e1d2f5d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 1153751415322780031}
+  _detector: {fileID: 4637362781126967502}

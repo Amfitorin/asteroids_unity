@@ -8,6 +8,7 @@ using GameplayMechanics.App;
 using GameplayMechanics.Configs;
 using GameplayMechanics.Enemy;
 using GameplayMechanics.PLayers;
+using UnityEngine;
 
 namespace GameplayMechanics.MainMechanic
 {
@@ -15,10 +16,11 @@ namespace GameplayMechanics.MainMechanic
     {
         private readonly IAppController _appController;
         private readonly ConfigProvider _configProvider;
-        private readonly IObjectSpawnSystem _objectSpawnSystem;
         private readonly GameplayController _controller;
         private List<IGameplayMechanic> _gameplayMechanics;
         private CancellationTokenSource _tokenSource;
+        private int _currentLevel;
+        private EnemyMechanic _enemyMechanic;
 
         public GameplayMechanic(IAppController appController, GameplayController controller,
             ConfigProvider configProvider, IObjectSpawnSystem objectSpawnSystem)
@@ -26,23 +28,62 @@ namespace GameplayMechanics.MainMechanic
             _appController = appController;
             _controller = controller;
             _configProvider = configProvider;
-            _objectSpawnSystem = objectSpawnSystem;
             _tokenSource = new CancellationTokenSource();
             StartGame().Forget();
+            appController.AppEventProvider.AppPaused += AppEventProviderOnAppPaused;
+            appController.AppEventProvider.AppQuit += AppEventProviderOnAppQuit;
+        }
+
+        private void AppEventProviderOnAppQuit()
+        {
+            _appController.AppEventProvider.AppPaused -= AppEventProviderOnAppPaused;
+            _appController.AppEventProvider.AppQuit -= AppEventProviderOnAppQuit;
+            Pause(true).Forget();
+        }
+
+        public void Release()
+        {
+            _gameplayMechanics.ForEach(mechanic => { mechanic.Release(); });
+        }
+
+        private void AppEventProviderOnAppPaused(bool state)
+        {
+            Pause(state).Forget();
         }
 
         public async UniTask StartGame()
         {
-            _controller.StartGame(_configProvider);
+            _controller.StartGame(_configProvider, _tokenSource);
+            _enemyMechanic = new EnemyMechanic(_controller, _tokenSource, _configProvider);
+            _enemyMechanic.AllDied += EnemyMechanicOnAllDied;
+            var pLayerMechanic = new PLayerMechanic(_controller, _configProvider);
+            pLayerMechanic.Died += PLayerMechanicOnDied;
             _gameplayMechanics = new List<IGameplayMechanic>
             {
-                new PLayerMechanic(_controller, _tokenSource, _configProvider),
-                new AsteroidMechanic(_controller, _tokenSource),
-                new NloMechanic(_controller, _tokenSource)
+                pLayerMechanic,
+                _enemyMechanic
             };
+            SetupLevel(++_currentLevel);
             await UniTask.WhenAll(_gameplayMechanics.Select(x => x.StartGame()));
             RunUpdateLoop();
         }
+
+        private void PLayerMechanicOnDied()
+        {
+            //GameOver
+        }
+
+        private void EnemyMechanicOnAllDied()
+        {
+            SetupLevel(++_currentLevel);
+            StartNewEnemyLevel().Forget();
+        }
+
+        private async UniTaskVoid StartNewEnemyLevel()
+        {
+            await _enemyMechanic.StartGame();
+        }
+
 
         private void RunUpdateLoop()
         {
@@ -50,10 +91,9 @@ namespace GameplayMechanics.MainMechanic
             LateUpdate().Forget();
         }
 
-        public async UniTaskVoid SetupLevel(int level)
+        public void SetupLevel(int level)
         {
-            _gameplayMechanics.ForEach(mechanic => { mechanic.SetupLevel(level).Forget(); });
-            await UniTask.Yield();
+            _gameplayMechanics.ForEach(mechanic => { mechanic.SetupLevel(level); });
         }
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
@@ -93,6 +133,8 @@ namespace GameplayMechanics.MainMechanic
                 SetupTokenSource(new CancellationTokenSource());
                 RunUpdateLoop();
             }
+
+            Time.timeScale = state ? 0f : 1f;
 
             await UniTask.Yield();
         }

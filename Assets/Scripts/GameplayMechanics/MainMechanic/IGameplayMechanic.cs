@@ -1,9 +1,9 @@
-using System.Threading;
+using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
 
 namespace GameplayMechanics.MainMechanic
 {
-    public interface IGameplayMechanic
+    public interface IGameplayMechanic : ITokenCancelSource
     {
         async UniTaskVoid Update()
         {
@@ -25,11 +25,12 @@ namespace GameplayMechanics.MainMechanic
             await UniTask.Yield();
         }
 
-        async UniTaskVoid SetupLevel(int level)
+        void Release()
         {
-            await UniTask.Yield();
         }
 
-        void SetupTokenSource(CancellationTokenSource tokenSource);
+        void SetupLevel(int level)
+        {
+        }
     }
 }

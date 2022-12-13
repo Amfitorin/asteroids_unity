@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Core.Utils.Extensions;
 using Cysharp.Threading.Tasks;
@@ -15,7 +16,6 @@ namespace GameplayMechanics.PLayers
         private readonly ICameraView _cameraView;
         private readonly PLayerConfig _playerConfig;
         private readonly IPlayerView _playerView;
-        private CancellationTokenSource _cancellationTokenSource;
         private Transform _playerTransform;
 
         private float _speed;
@@ -24,10 +24,8 @@ namespace GameplayMechanics.PLayers
         private float _slowTime;
         private Vector3 _slowDirection;
 
-        public PLayerMechanic(GameplayController controller, CancellationTokenSource cancellationTokenSource,
-            ConfigProvider provider)
+        public PLayerMechanic(GameplayController controller, ConfigProvider provider)
         {
-            _cancellationTokenSource = cancellationTokenSource;
             _playerView = controller.PlayerView;
             _playerConfig = provider.PLayerConfig;
             _cameraView = controller.Camera;
@@ -37,6 +35,8 @@ namespace GameplayMechanics.PLayers
         {
             _playerTransform = await _playerView.SpawnPLayer(_playerConfig.Prefab, _cameraView.ScreenCenter);
         }
+
+        public event Action Died;
 
         public void Attack()
         {
@@ -48,7 +48,6 @@ namespace GameplayMechanics.PLayers
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
-            _cancellationTokenSource = tokenSource;
         }
 
         public async UniTaskVoid LateUpdate()
@@ -104,6 +103,8 @@ namespace GameplayMechanics.PLayers
             {
                 _playerView.MoveTo(position);
             }
+
+            await UniTask.Yield();
         }
     }
 }

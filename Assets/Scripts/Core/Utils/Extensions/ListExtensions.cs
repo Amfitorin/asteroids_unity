@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core.Utils.Extensions
 {
@@ -12,6 +13,16 @@ namespace Core.Utils.Extensions
             if (index != last)
                 list[index] = list[last];
             list.RemoveAt(last);
+        }
+
+        public static T RandomElement<T>(this T[] array)
+        {
+            return array[Random.Range(0, array.Length)];
+        }
+        
+        public static T RandomElement<T>(this IList<T> list)
+        {
+            return list[Random.Range(0, list.Count)];
         }
     }
 }
