@@ -4,8 +4,10 @@ using Core.Utils.Extensions;
 using Cysharp.Threading.Tasks;
 using Gameplay.Gameplay;
 using Gameplay.ViewApi.CameraView;
+using Gameplay.ViewApi.Gun;
 using Gameplay.ViewApi.Player;
 using GameplayMechanics.Configs;
+using GameplayMechanics.Gun;
 using Model.Configs.Player;
 using UnityEngine;
 
@@ -17,6 +19,8 @@ namespace GameplayMechanics.PLayers
         private readonly PLayerConfig _playerConfig;
         private readonly IPlayerView _playerView;
         private Transform _playerTransform;
+        private IGunMechanic _baseGunMechanic;
+        private IGunMechanic _extraGunMechanic;
 
         private float _speed;
         private Vector3 _direction = Vector3.zero;
@@ -29,6 +33,13 @@ namespace GameplayMechanics.PLayers
             _playerView = controller.PlayerView;
             _playerConfig = provider.PLayerConfig;
             _cameraView = controller.Camera;
+            _baseGunMechanic = new BulletMechanic(provider.PLayerConfig.BulletGun, controller.BulletView, BaseGunPoint,
+                () => _playerTransform.up.normalized);
+        }
+
+        private Vector3 BaseGunPoint()
+        {
+            return _playerView.GetBaseGunPoint();
         }
 
         public async UniTask StartGame()
@@ -72,7 +83,7 @@ namespace GameplayMechanics.PLayers
             if (drive > 0.1f)
             {
                 _slowTime = 0f;
-                var forward = _playerTransform.up;
+                var forward = _playerTransform.up.normalized;
                 _speed = Mathf.Clamp(_speed + _playerConfig.Acceleration * Time.deltaTime, 0f,
                     _playerConfig.MaxSpeed);
                 if (_direction == Vector3.zero)
@@ -92,9 +103,10 @@ namespace GameplayMechanics.PLayers
             }
             else if (_speed > 0)
             {
-                _direction = Vector3.zero;
                 _slowTime += Time.deltaTime;
-                _speed = Mathf.Lerp(_currentMaxSpeed, 0f, _slowTime / _playerConfig.SlowTime);
+                var slowProgress = _slowTime / _playerConfig.SlowTime;
+                _speed = Mathf.Lerp(_currentMaxSpeed, 0f, slowProgress);
+                _direction = Vector3.Lerp(_direction, Vector3.zero, slowProgress);
                 position += _slowDirection * _speed * Time.deltaTime;
                 posChanged = true;
             }
@@ -103,6 +115,8 @@ namespace GameplayMechanics.PLayers
             {
                 _playerView.MoveTo(position);
             }
+
+            _baseGunMechanic.LateUpdate().Forget();
 
             await UniTask.Yield();
         }

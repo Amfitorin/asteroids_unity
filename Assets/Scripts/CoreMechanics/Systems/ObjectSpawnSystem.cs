@@ -25,6 +25,10 @@ namespace CoreMechanics.Systems
             if (_poolObjects.TryGetValue(prefab, out var poolElement) &&
                 _pool.TryGetFromPool<T>(prefab.Path, poolElement.PoolType, out var obj))
             {
+                var gameObject = await GetGameObject(obj);
+                gameObject.transform.SetParent(root);
+                gameObject.transform.position = position;
+                gameObject.transform.rotation = Quaternion.identity;
                 return obj;
             }
 
@@ -39,39 +43,28 @@ namespace CoreMechanics.Systems
                 return spawned.GetComponentInChildren<T>();
             }
 
-            await UniTask.Yield();
-
             return spawned as T;
         }
 
         public async UniTask DestroyObject<T>(T obj) where T : Object
         {
-            if (_poolSpawned.TryGetValue(obj, out var pool))
+            var gameObject = await GetGameObject(obj);
+            if (_poolSpawned.TryGetValue(gameObject, out var pool))
             {
-                _pool.MoveToPool(pool.Prefab.Path, obj, pool.PoolType);
-                if (typeof(Component).IsAssignableFrom(typeof(T)))
-                {
-                    (obj as Component)?.gameObject.SetActive(false);
-                }
-                else
-                {
-                    (obj as GameObject)?.SetActive(false);
-                }
+                _pool.MoveToPool(pool.Prefab.Path, gameObject, pool.PoolType);
 
                 _poolSpawned.Remove(obj);
                 return;
             }
-            
-            if (typeof(Component).IsAssignableFrom(typeof(T)))
-            {
-                Object.Destroy((obj as Component)?.gameObject);
-            }
-            else
-            {
-                Object.Destroy(obj as GameObject);
-            }
 
-            await UniTask.Yield();
+            Object.Destroy(gameObject);
+        }
+
+        private async UniTask<GameObject> GetGameObject<T>(T obj) where T : Object
+        {
+            if (!typeof(Component).IsAssignableFrom(typeof(T))) return obj as GameObject;
+            await UniTask.SwitchToMainThread();
+            return (obj as Component)?.gameObject;
         }
     }
 }

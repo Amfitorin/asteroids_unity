@@ -13,6 +13,7 @@ namespace Gameplay.ViewApi.Player
         void AddRotation(float angle);
         void MoveTo(Vector3 position);
         Bounds GetBounds();
+        Vector3 GetBaseGunPoint();
 
     }
 }

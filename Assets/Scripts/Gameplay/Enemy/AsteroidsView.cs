@@ -47,7 +47,7 @@ namespace Gameplay.Enemy
             {
                 var spawned = await _spawnSystem.SpawnObject<Asteroid>(config.Prefab, _root,
                     getPosition());
-                spawned.Init(new AsteroidSpawnData(++_lastAsteroidId, config, Random.insideUnitCircle),
+                spawned.Init(new AsteroidSpawnData(++_lastAsteroidId, config, Random.insideUnitCircle.normalized),
                     _cameraView, _tokenSource);
                 result.Add(spawned);
                 _asteroids.Add(spawned);

@@ -49,5 +49,10 @@ namespace Gameplay.Player
         {
             return _player.GetBounds();
         }
+
+        public Vector3 GetBaseGunPoint()
+        {
+            return _player.BulletRoot.position;
+        }
     }
 }
