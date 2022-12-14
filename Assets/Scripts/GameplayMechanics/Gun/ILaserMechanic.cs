@@ -1,6 +1,6 @@
 namespace GameplayMechanics.Gun
 {
-    public interface ILaserMechanic : IGunMechanic
+    public interface ILaserMechanic : IExtraGunMechanic
     {
     }
 }

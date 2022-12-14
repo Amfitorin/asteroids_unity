@@ -15,4 +15,5 @@ MonoBehaviour:
   _path: Assets/Configs/Guns/Bullets/NloBullet.asset
   _prefab:
     _path: Assets/Prefabs/Bullets/enemyBullet.prefab
-  _speed: 0.4
+  _speed: 5
+  _lifeTime: 0.7

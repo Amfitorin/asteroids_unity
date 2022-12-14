@@ -15,4 +15,5 @@ MonoBehaviour:
   _path: Assets/Configs/Guns/Bullets/BulletConfig.asset
   _prefab:
     _path: Assets/Prefabs/Bullets/playerBullet.prefab
-  _speed: 0.51
+  _speed: 7
+  _lifeTime: 1

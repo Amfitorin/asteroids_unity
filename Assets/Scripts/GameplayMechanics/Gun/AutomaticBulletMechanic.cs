@@ -1,4 +1,6 @@
 using System.Threading;
+using Unity.Plastic.Newtonsoft.Json.Serialization;
+using UnityEngine;
 
 namespace GameplayMechanics.Gun
 {
@@ -7,6 +9,11 @@ namespace GameplayMechanics.Gun
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
             
+        }
+
+        public void SetDirectionFunc(Func<Vector3> getDirection)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

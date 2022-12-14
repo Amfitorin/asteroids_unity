@@ -25,7 +25,11 @@ namespace CoreMechanics.Pool
             }
 
             elements.Push(obj);
-            obj.transform.SetParent(_poolRoot);
+            if (_poolRoot != null)
+            {
+                obj.transform.SetParent(_poolRoot);
+            }
+            obj.SetActive(false);
         }
 
         public bool TryGetObject<T>(string path, out T obj) where T : Object
@@ -34,6 +38,8 @@ namespace CoreMechanics.Pool
             if (!PoolObjects.TryGetValue(path, out var elements)) return false;
 
             if (!elements.TryPop(out var element)) return false;
+            
+            element.SetActive(true);
 
             if (typeof(Component).IsAssignableFrom(typeof(T)))
                 obj = element.GetComponentInChildren<T>();

@@ -14,12 +14,11 @@ namespace Gameplay.Player
         private Transform _bulletRoot;
 
         [SerializeField]
-        private GameObjectLink _bullet;
-
-        [SerializeField]
         private SpriteRenderer[] _renderers;
 
-        private Bounds _zeroBounds => new Bounds(transform.position, Vector3.zero);
+        public Transform BulletRoot => _bulletRoot;
+
+        private Bounds ZeroBounds => new(transform.position, Vector3.zero);
 
         private void OnValidate()
         {
@@ -32,13 +31,13 @@ namespace Gameplay.Player
         {
             if (_renderers == null || _renderers.Length == 0)
             {
-                return _zeroBounds;
+                return ZeroBounds;
             }
 
             var renderers = _renderers.Where(x => x.gameObject.activeInHierarchy).ToArray();
             if (renderers.Length == 0)
             {
-                return _zeroBounds;
+                return ZeroBounds;
             }
 
             var bounds = renderers[0].bounds;
@@ -50,11 +49,6 @@ namespace Gameplay.Player
             }
 
             return bounds;
-        }
-
-        private void OnTriggerEnter2D(Collider2D col)
-        {
-            Debug.LogError("Коллизия");
         }
     }
 }

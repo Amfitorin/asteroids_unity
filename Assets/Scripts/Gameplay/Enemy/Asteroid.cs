@@ -24,9 +24,15 @@ namespace Gameplay.Enemy
         private CancellationTokenSource _lifeToken;
         private float _rotationSpeed;
 
+        private void OnDisable()
+        {
+            ClearToken();
+        }
+
         private void OnDestroy()
         {
-            _lifeToken.Cancel();
+            _lifeToken?.Cancel();
+            _lifeToken = null;
         }
 
         private void OnValidate()
@@ -49,11 +55,23 @@ namespace Gameplay.Enemy
             StartMove().Forget();
         }
 
+        private void ClearToken()
+        {
+            _lifeToken?.Cancel();
+            _lifeToken = null;
+        }
+
+        private void ReInitToken()
+        {
+            ClearToken();
+            _lifeToken = new CancellationTokenSource();
+        }
+
         public void Init(AsteroidSpawnData spawnData, ICameraView cameraView, CancellationTokenSource globalToken)
         {
             SpawnData = spawnData;
             _cameraView = cameraView;
-            _lifeToken = new CancellationTokenSource();
+            ReInitToken();
             _globalToken = globalToken.Token;
             _rotationSpeed = spawnData.Config.AngleSpeed.GetRandom();
 
@@ -69,7 +87,7 @@ namespace Gameplay.Enemy
         {
             var linkedSource =
                 CancellationTokenSource.CreateLinkedTokenSource(_lifeToken.Token, _globalToken);
-            await UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.LastUpdate)
+            await UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.PreLateUpdate)
                 .ForEachAsync(_ =>
                 {
                     Move();

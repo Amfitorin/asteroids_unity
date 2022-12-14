@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace CoreMechanics.Pool
@@ -8,9 +9,10 @@ namespace CoreMechanics.Pool
     {
         private readonly Dictionary<PoolType, PoolContainer> _pools = new();
 
-        public void MoveToPool(string path, Object obj, PoolType type)
+        public void MoveToPool(string path, GameObject obj, PoolType type)
         {
             var pool = GetPool(type);
+            pool.StoreObject(path, obj);
         }
 
         public bool TryGetFromPool<T>(string path, PoolType type, out T obj) where T : Object
