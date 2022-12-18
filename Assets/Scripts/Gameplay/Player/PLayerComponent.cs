@@ -1,5 +1,10 @@
 using System.Linq;
-using CoreMechanics.ObjectLinks.UnityObjectLink;
+using CoreMechanics.Systems;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using DoTween.Modules;
+using Gameplay.Gun;
+using Model.Configs.Player;
 using UnityEngine;
 using Action = Unity.Plastic.Newtonsoft.Json.Serialization.Action;
 
@@ -8,15 +13,21 @@ namespace Gameplay.Player
     public class PLayerComponent : MonoBehaviour, IPlayerComponent
     {
         [SerializeField]
-        private Transform _mainRoot;
-
-        [SerializeField]
-        private Transform _bulletRoot;
-
-        [SerializeField]
         private SpriteRenderer[] _renderers;
 
-        public Transform BulletRoot => _bulletRoot;
+        [SerializeField]
+        private Transform _baseGunRoot;
+
+        [SerializeField]
+        private Transform _extraGunRoot;
+
+        private IObjectSpawnSystem _spawnSystem;
+
+        [SerializeField]
+        private SpriteRenderer _fire;
+
+        public Transform BulletRoot { get; private set; }
+        public Transform LaserRoot { get; private set; }
 
         private Bounds ZeroBounds => new(transform.position, Vector3.zero);
 
@@ -49,6 +60,31 @@ namespace Gameplay.Player
             }
 
             return bounds;
+        }
+
+        public void ApplySpeed(float percent)
+        {
+            _fire.DOFade(percent, 0.1f);
+            _fire.transform.DOScaleY(percent, 0.1f);
+        }
+
+
+        public async UniTask Init(PLayerConfig config, IObjectSpawnSystem spawnSystem)
+        {
+            _spawnSystem = spawnSystem;
+            var baseGunPrefab = config.BulletGun.Config.Settings.Prefab;
+            var extraGunPrefab = config.LaserGun.Config.Settings.Prefab;
+            var guns = await UniTask.WhenAll(
+                _spawnSystem.SpawnObject<GunComponent>(
+                    baseGunPrefab, _baseGunRoot, Vector3.zero),
+                _spawnSystem.SpawnObject<GunComponent>(
+                    extraGunPrefab, _extraGunRoot, Vector3.zero));
+            var baseGun = guns.Item1;
+            baseGun.transform.localPosition = baseGunPrefab.Resource.transform.localPosition;
+            BulletRoot = baseGun.BulletRoot;
+            var extraGun = guns.Item2;
+            extraGun.transform.localPosition = extraGunPrefab.Resource.transform.localPosition;
+            LaserRoot = extraGun.BulletRoot;
         }
     }
 }

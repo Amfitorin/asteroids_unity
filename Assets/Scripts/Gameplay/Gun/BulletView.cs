@@ -12,11 +12,11 @@ namespace Gameplay.Gun
 {
     public class BulletView : IBulletView
     {
-        private readonly IObjectSpawnSystem _spawnSystem;
-        private readonly ICameraView _cameraView;
-        private readonly CancellationTokenSource _tokenSource;
         private readonly Transform _bulletRoot;
         private readonly List<BulletGun> _bullets = new();
+        private readonly ICameraView _cameraView;
+        private readonly IObjectSpawnSystem _spawnSystem;
+        private CancellationTokenSource _tokenSource;
 
         public BulletView(IObjectSpawnSystem spawnSystem, ICameraView cameraView, CancellationTokenSource tokenSource,
             Transform bulletRoot)
@@ -40,6 +40,15 @@ namespace Gameplay.Gun
             var bulletGun = bullet as BulletGun;
             _bullets.RemoveWithReplaceLast(bulletGun);
             await _spawnSystem.DestroyObject(bulletGun);
+        }
+
+        public void SetupTokenSource(CancellationTokenSource tokenSource)
+        {
+            _tokenSource = tokenSource;
+            foreach (var bullet in _bullets)
+            {
+                bullet.SetupTokenSource(tokenSource);
+            }
         }
     }
 }

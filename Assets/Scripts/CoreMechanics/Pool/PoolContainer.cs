@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CoreMechanics.Pool
@@ -16,7 +17,7 @@ namespace CoreMechanics.Pool
 
         private Dictionary<string, Stack<GameObject>> PoolObjects { get; } = new();
 
-        public void StoreObject(string path, GameObject obj)
+        public async UniTask StoreObject(string path, GameObject obj)
         {
             if (!PoolObjects.TryGetValue(path, out var elements))
             {
@@ -27,8 +28,10 @@ namespace CoreMechanics.Pool
             elements.Push(obj);
             if (_poolRoot != null)
             {
+                await UniTask.SwitchToMainThread();
                 obj.transform.SetParent(_poolRoot);
             }
+
             obj.SetActive(false);
         }
 
@@ -38,7 +41,7 @@ namespace CoreMechanics.Pool
             if (!PoolObjects.TryGetValue(path, out var elements)) return false;
 
             if (!elements.TryPop(out var element)) return false;
-            
+
             element.SetActive(true);
 
             if (typeof(Component).IsAssignableFrom(typeof(T)))

@@ -51,7 +51,7 @@ namespace CoreMechanics.Systems
             var gameObject = await GetGameObject(obj);
             if (_poolSpawned.TryGetValue(gameObject, out var pool))
             {
-                _pool.MoveToPool(pool.Prefab.Path, gameObject, pool.PoolType);
+                await _pool.MoveToPool(pool.Prefab.Path, gameObject, pool.PoolType);
 
                 _poolSpawned.Remove(obj);
                 return;

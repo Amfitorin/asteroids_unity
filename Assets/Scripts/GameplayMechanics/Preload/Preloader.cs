@@ -1,5 +1,6 @@
 using Core.Utils.Attributes;
 using Core.Utils.Extensions;
+using DG.Tweening;
 using Gameplay.App;
 using GameplayMechanics.Configs;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace GameplayMechanics.Preload
 
         private async void Awake()
         {
+            DOTween.Init();
             await AppManager.Instance.PreloadController.InitGame(_eventProvider, _gameplayScene, _uiScene, _configs);
         }
 

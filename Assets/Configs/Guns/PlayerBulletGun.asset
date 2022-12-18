@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _path: Assets/Configs/Guns/PlayerBulletGun.asset
   _settings:
-    _cooldown: 0.5
+    _cooldown: 0.4
     _prefab:
       _path: Assets/Prefabs/Players/BulletGun.prefab
     _bullet:

@@ -4,7 +4,6 @@ using Core.Utils.Extensions;
 using Cysharp.Threading.Tasks;
 using Gameplay.Gameplay;
 using Gameplay.ViewApi.CameraView;
-using Gameplay.ViewApi.Gun;
 using Gameplay.ViewApi.Player;
 using GameplayMechanics.Configs;
 using GameplayMechanics.Gun;
@@ -19,7 +18,7 @@ namespace GameplayMechanics.PLayers
         private readonly PLayerConfig _playerConfig;
         private readonly IPlayerView _playerView;
         private Transform _playerTransform;
-        private IGunMechanic _baseGunMechanic;
+        private readonly IGunMechanic _baseGunMechanic;
         private IGunMechanic _extraGunMechanic;
 
         private float _speed;
@@ -44,18 +43,11 @@ namespace GameplayMechanics.PLayers
 
         public async UniTask StartGame()
         {
-            _playerTransform = await _playerView.SpawnPLayer(_playerConfig.Prefab, _cameraView.ScreenCenter);
+            _playerTransform = await _playerView.SpawnPLayer(_playerConfig, _cameraView.ScreenCenter);
+            _playerView.ApplySpeed(0f);
         }
 
         public event Action Died;
-
-        public void Attack()
-        {
-        }
-
-        public void UseExtraGun()
-        {
-        }
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
@@ -113,6 +105,7 @@ namespace GameplayMechanics.PLayers
 
             if (posChanged)
             {
+                _playerView.ApplySpeed(_speed / _playerConfig.MaxSpeed);
                 _playerView.MoveTo(position);
             }
 

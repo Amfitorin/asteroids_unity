@@ -7,5 +7,6 @@ namespace Gameplay.Player
     {
         event Action OnDied;
         Bounds GetBounds();
+        void ApplySpeed(float percent);
     }
 }
