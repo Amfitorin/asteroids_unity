@@ -2,6 +2,7 @@ using System;
 using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.CameraView;
+using Gameplay.ViewApi.Gun;
 using Gameplay.ViewApi.Player;
 using Model.Configs.Player;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace Gameplay.Player
         }
 
         public event Action Died;
+
+        public ILaserComponent Laser => _player.Laser;
 
         public async UniTask<Transform> SpawnPLayer(PLayerConfig config, Vector3 spawnPosition)
         {
@@ -46,6 +49,11 @@ namespace Gameplay.Player
             _player.transform.position = position;
         }
 
+        public Transform ExtraGunTransform()
+        {
+            return _player.LaserRoot;
+        }
+
         public void ApplySpeed(float percent)
         {
             _player.ApplySpeed(percent);
@@ -57,14 +65,9 @@ namespace Gameplay.Player
             return _player.GetBounds();
         }
 
-        public Vector3 GetBaseGunPoint()
+        public Transform BaseGunTransform()
         {
-            return _player.BulletRoot.position;
-        }
-
-        public Vector3 GetExtraGunPoint()
-        {
-            return _player.LaserRoot.position;
+            return _player.BulletRoot;
         }
     }
 }

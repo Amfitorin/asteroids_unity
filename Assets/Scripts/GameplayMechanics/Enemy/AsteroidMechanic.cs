@@ -18,7 +18,7 @@ namespace GameplayMechanics.Enemy
         private readonly GameplayController _controller;
         private readonly LevelsConfig _levelConfig;
         private readonly IAsteroidsView _view;
-        private List<UniTask<Vector3>> _asteroidAwaiters = new();
+        private List<AsyncLazy<Vector3>> _asteroidAwaiters = new();
         private List<IAsteroidComponent> _asteroids = new();
         private LevelSettings _currentLevelSettings;
 
@@ -76,23 +76,17 @@ namespace GameplayMechanics.Enemy
 
         public async UniTask WaitDieAllElements()
         {
-            _asteroidAwaiters.AddRange(_asteroids.Select(x => x.WaitDie()));
+            _asteroidAwaiters.AddRange(_asteroids.Select(x => UniTask.Lazy(x.WaitDie)));
             while (_asteroidAwaiters.Count > 0)
             {
-                var awaited = await UniTask.WhenAny(_asteroidAwaiters);
+                var awaited = await UniTask.WhenAny(_asteroidAwaiters.Select(x => x.Task));
                 var index = awaited.winArgumentIndex;
                 var component = _asteroids[index];
-                for (var i = 0; i < _asteroidAwaiters.Count; i++)
-                {
-                    if (i == awaited.winArgumentIndex)
-                        continue;
-                    var awaiter = _asteroidAwaiters[i];
-                    _asteroidAwaiters[i] = awaiter.Preserve();
-                }
 
+
+                _asteroidAwaiters.RemoveAt(index);
+                _asteroids.RemoveAt(index);
                 await DieObject(awaited.result, component);
-                _asteroids.RemoveWithReplaceLast(component);
-                _asteroidAwaiters = _asteroids.Select(x => x.WaitDie()).ToList();
             }
         }
 
@@ -111,6 +105,7 @@ namespace GameplayMechanics.Enemy
             var shards = await _view.SpawnAsteroids(spawnData.Config.ShardCount, spawnData.Config.Shard,
                 () => awaitedResult);
             _asteroids.AddRange(shards);
+            _asteroidAwaiters.AddRange(shards.Select(x => UniTask.Lazy(x.WaitDie)));
         }
     }
 }

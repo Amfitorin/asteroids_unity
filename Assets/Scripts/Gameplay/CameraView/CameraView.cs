@@ -3,12 +3,14 @@ using Core.Utils.Extensions;
 using Gameplay.ViewApi.CameraView;
 using Model.CustomTypes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Gameplay.CameraView
 {
     public class CameraView : ICameraView
     {
         private readonly Camera _camera;
+        private Plane[] _planes = new Plane[6];
 
         public CameraView(Camera camera)
         {
@@ -22,6 +24,7 @@ namespace Gameplay.CameraView
             topRight.z = _camera.farClipPlane;
             var size = topRight - bottomLeft;
             ViewRect = new Bounds(ScreenCenter, size).AsRect();
+            GeometryUtility.CalculateFrustumPlanes(_camera, _planes);
         }
 
         public float ConstZ => _camera.farClipPlane - 10f;
@@ -49,6 +52,25 @@ namespace Gameplay.CameraView
                     randomY > borderSize ? 1f - doubleBorder + randomY : randomY, ConstZ);
                 return _camera.ViewportToWorldPoint(viewport);
             }
+        }
+
+
+        public Vector3 GetBorderPointByDirection(Vector3 point, Vector3 direction)
+        {
+            var ray = new Ray(point, direction);
+
+            var minDistance = float.MaxValue;
+            var result = point;
+
+            for (var i = 0; i < 4; i++)
+            {
+                if (!_planes[i].Raycast(ray, out var distance)) continue;
+                if (!(distance < minDistance)) continue;
+                result = ray.GetPoint(distance);
+                minDistance = distance;
+            }
+
+            return result;
         }
 
         public Vector3 RandomPointOutsideScreenBorder

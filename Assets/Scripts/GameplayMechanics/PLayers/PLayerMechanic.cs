@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using Core.Utils.Extensions;
 using Cysharp.Threading.Tasks;
-using Gameplay.Gameplay;
 using Gameplay.ViewApi.CameraView;
+using Gameplay.ViewApi.Gameplay;
 using Gameplay.ViewApi.Player;
 using GameplayMechanics.Configs;
 using GameplayMechanics.Gun;
@@ -19,7 +19,7 @@ namespace GameplayMechanics.PLayers
         private readonly IPlayerView _playerView;
         private Transform _playerTransform;
         private readonly IGunMechanic _baseGunMechanic;
-        private IGunMechanic _extraGunMechanic;
+        private ILaserMechanic _extraGunMechanic;
 
         private float _speed;
         private Vector3 _direction = Vector3.zero;
@@ -27,23 +27,25 @@ namespace GameplayMechanics.PLayers
         private float _slowTime;
         private Vector3 _slowDirection;
 
-        public PLayerMechanic(GameplayController controller, ConfigProvider provider)
+        public PLayerMechanic(IGameplayController controller, ConfigProvider provider)
         {
             _playerView = controller.PlayerView;
             _playerConfig = provider.PLayerConfig;
             _cameraView = controller.Camera;
             _baseGunMechanic = new BulletMechanic(provider.PLayerConfig.BulletGun, controller.BulletView, BaseGunPoint,
                 () => _playerTransform.up.normalized);
+            _extraGunMechanic = new LaserMechanic(provider.PLayerConfig.LaserGun, controller.LaserView, null);
         }
 
         private Vector3 BaseGunPoint()
         {
-            return _playerView.GetBaseGunPoint();
+            return _playerView.BaseGunTransform().position;
         }
 
         public async UniTask StartGame()
         {
             _playerTransform = await _playerView.SpawnPLayer(_playerConfig, _cameraView.ScreenCenter);
+            _extraGunMechanic.Init(_playerView.Laser, _playerView.ExtraGunTransform());
             _playerView.ApplySpeed(0f);
         }
 
@@ -51,6 +53,8 @@ namespace GameplayMechanics.PLayers
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
+            _baseGunMechanic.SetupTokenSource(tokenSource);
+            _extraGunMechanic.SetupTokenSource(tokenSource);
         }
 
         public async UniTaskVoid LateUpdate()
@@ -110,6 +114,7 @@ namespace GameplayMechanics.PLayers
             }
 
             _baseGunMechanic.LateUpdate().Forget();
+            _extraGunMechanic.LateUpdate().Forget();
 
             await UniTask.Yield();
         }

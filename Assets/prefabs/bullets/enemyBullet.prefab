@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1917720718304652925}
   - component: {fileID: 4736092005577124641}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: view
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7387541635556543208}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mechanics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 6266437479278295561}
   - component: {fileID: 1762460323691936018}
   - component: {fileID: 4181321385141703141}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: enemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

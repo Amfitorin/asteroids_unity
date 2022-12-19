@@ -1,9 +1,11 @@
-using GameplayMechanics.MainMechanic;
+using System;
 
 namespace GameplayMechanics.Gun
 {
-    public interface IExtraGunMechanic : IGameplayMechanic
+    public interface IExtraGunMechanic : IGunMechanic
     {
-        
+        bool IsActive { get; }
+        void Die();
+        event Action<float> CooldownProgress;
     }
 }

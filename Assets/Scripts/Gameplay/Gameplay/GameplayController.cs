@@ -37,6 +37,7 @@ namespace Gameplay.Gameplay
         public IAsteroidsView AsteroidsView { get; private set; }
 
         public ICameraView Camera { get; private set; }
+        public ILaserView LaserView { get; private set; }
 
         public void SetupSpawnSystem(IObjectSpawnSystem objectSpawnSystem)
         {
@@ -49,6 +50,7 @@ namespace Gameplay.Gameplay
             PlayerView = new PlayerView(_playerRoot, Camera, _spawnSystem);
             BulletView = new BulletView(_spawnSystem, Camera, tokenSource, _enemyRoot);
             AsteroidsView = new AsteroidsView(_enemyRoot, Camera, _spawnSystem, tokenSource);
+            LaserView = new LaserView(Camera);
         }
     }
 }

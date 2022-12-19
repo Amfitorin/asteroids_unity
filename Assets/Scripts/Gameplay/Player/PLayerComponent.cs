@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DoTween.Modules;
 using Gameplay.Gun;
+using Gameplay.ViewApi.Gun;
 using Model.Configs.Player;
 using UnityEngine;
 using Action = Unity.Plastic.Newtonsoft.Json.Serialization.Action;
@@ -26,10 +27,13 @@ namespace Gameplay.Player
         [SerializeField]
         private SpriteRenderer _fire;
 
+        private ILaserComponent _laser;
+
         public Transform BulletRoot { get; private set; }
         public Transform LaserRoot { get; private set; }
 
         private Bounds ZeroBounds => new(transform.position, Vector3.zero);
+        public ILaserComponent Laser => _laser;
 
         private void OnValidate()
         {
@@ -85,6 +89,7 @@ namespace Gameplay.Player
             var extraGun = guns.Item2;
             extraGun.transform.localPosition = extraGunPrefab.Resource.transform.localPosition;
             LaserRoot = extraGun.BulletRoot;
+            _laser = extraGun.GetComponentInChildren<ILaserComponent>(true);
         }
     }
 }

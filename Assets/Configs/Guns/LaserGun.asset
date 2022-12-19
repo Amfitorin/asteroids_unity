@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _path: Assets/Configs/Guns/LaserGun.asset
   _settings:
-    _cooldown: 15
+    _cooldown: 25
     _prefab:
       _path: Assets/Prefabs/Players/LaserGun.prefab
     _maxCount: 3
     _useDelay: 5
-    _time: 5
+    _time: 2
