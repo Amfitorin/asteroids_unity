@@ -1,23 +1,21 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Gameplay.Gameplay;
-using GameplayMechanics.Configs;
+using Gameplay.ViewApi.Gameplay;
+using Model.Configs;
 
 namespace GameplayMechanics.Enemy
 {
     public class EnemyMechanic : IEnemyMechanic
     {
-        private readonly ConfigProvider _provider;
         private readonly IAsteroidMechanic _asteroidsMechanic;
         private readonly INloMechanic _nloMechanic;
 
-        public EnemyMechanic(GameplayController controller, CancellationTokenSource tokenSource,
-            ConfigProvider provider)
+        public EnemyMechanic(IGameplayController controller, CancellationTokenSource tokenSource,
+            IConfigProvider provider)
         {
-            _provider = provider;
-            _asteroidsMechanic = new AsteroidMechanic(controller, _provider, controller.AsteroidsView);
-            _nloMechanic = new NloMechanic(controller, tokenSource, _provider);
+            _asteroidsMechanic = new AsteroidMechanic(controller, provider, controller.AsteroidsView);
+            _nloMechanic = new NloMechanic(controller, tokenSource, provider, controller.NloView);
         }
 
         public async UniTask StartGame()
@@ -26,12 +24,6 @@ namespace GameplayMechanics.Enemy
             await _asteroidsMechanic.StartGame();
 
             WaitCancelLevel().Forget();
-        }
-
-        private async UniTaskVoid WaitCancelLevel()
-        {
-            await _asteroidsMechanic.WaitDieAllElements();
-            AllDied?.Invoke();
         }
 
         public void SetupLevel(int level)
@@ -43,8 +35,29 @@ namespace GameplayMechanics.Enemy
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
             _asteroidsMechanic.SetupTokenSource(tokenSource);
+            _nloMechanic.SetupTokenSource(tokenSource);
+        }
+
+        public async UniTaskVoid LateUpdate()
+        {
+            _nloMechanic.LateUpdate().Forget();
+            await UniTask.Yield();
         }
 
         public event Action AllDied;
+
+        private async UniTaskVoid WaitCancelLevel()
+        {
+            await _asteroidsMechanic.WaitDieAllElements();
+            CheckLevelEnd();
+        }
+
+        private void CheckLevelEnd()
+        {
+            if (!_asteroidsMechanic.HasEnemies && !_nloMechanic.HasNlo)
+            {
+                AllDied?.Invoke();
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Gameplay.Gun
 {
-    public class BulletGun : MonoBehaviour, IBulletComponent, ITokenCancelSource
+    public class BulletComponent : MonoBehaviour, IBulletComponent, ITokenCancelSource
     {
         [SerializeField]
         private SpriteRenderer _renderer;

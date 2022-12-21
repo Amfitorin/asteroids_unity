@@ -1,19 +1,49 @@
+using System;
 using System.Threading;
-using Unity.Plastic.Newtonsoft.Json.Serialization;
+using Core.Utils.Extensions;
+using Cysharp.Threading.Tasks;
+using Gameplay.ViewApi.Gun;
+using Model.Configs.Gun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameplayMechanics.Gun
 {
-    public class AutomaticBulletMechanic : IBulletMechanic
+    public sealed class AutomaticBulletMechanic : BulletGunMechanicAbstract
     {
-        public void SetupTokenSource(CancellationTokenSource tokenSource)
+        private readonly AutomaticBulletGunConfig _automaticConfig;
+        private readonly CancellationTokenSource _parentLifeToken;
+
+        public AutomaticBulletMechanic(AutomaticBulletGunConfig config, IBulletView view, Func<Vector3> getSpawnPoint,
+            CancellationTokenSource parentLifeToken)
+            : base(config, view, getSpawnPoint)
         {
-            
+            DirectionFunc = () => Random.insideUnitCircle;
+            _automaticConfig = config;
+            _parentLifeToken = parentLifeToken;
+            StartBullet().Forget();
         }
 
-        public void SetDirectionFunc(Func<Vector3> getDirection)
+        protected override Func<Vector3> DirectionFunc { get; set; }
+
+        private async UniTask StartBullet()
         {
-            throw new System.NotImplementedException();
+            await UniTask.WhenAny(UniTask.Delay(_automaticConfig.FireDelay.GetRandom().AsMS()),
+                UniTask.WaitUntilCanceled(_parentLifeToken.Token));
+            if (_parentLifeToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            var bullet = await _view.RunBullet(_config.Bullet, _getSpawnPoint(), DirectionFunc());
+            StartBulletDie(bullet).Forget();
+            StartBulletDelay().Forget();
+            StartBullet().Forget();
+        }
+
+        public override async UniTaskVoid LateUpdate()
+        {
+            await UniTask.Yield();
         }
     }
 }

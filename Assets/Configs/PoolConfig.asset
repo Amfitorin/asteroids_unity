@@ -26,3 +26,9 @@ MonoBehaviour:
   - _poolType: 2
     _prefab:
       _path: Assets/Prefabs/Asteroids/smallAsteroid.prefab
+  - _poolType: 2
+    _prefab:
+      _path: Assets/Prefabs/Bullets/enemyBullet.prefab
+  - _poolType: 2
+    _prefab:
+      _path: Assets/Prefabs/Players/nlo.prefab

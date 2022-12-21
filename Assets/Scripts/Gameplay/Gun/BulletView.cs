@@ -13,7 +13,7 @@ namespace Gameplay.Gun
     public class BulletView : IBulletView
     {
         private readonly Transform _bulletRoot;
-        private readonly List<BulletGun> _bullets = new();
+        private readonly List<BulletComponent> _bullets = new();
         private readonly ICameraView _cameraView;
         private readonly IObjectSpawnSystem _spawnSystem;
         private CancellationTokenSource _tokenSource;
@@ -29,7 +29,7 @@ namespace Gameplay.Gun
 
         public async UniTask<IBulletComponent> RunBullet(BulletConfig config, Vector3 position, Vector3 direction)
         {
-            var bullet = await _spawnSystem.SpawnObject<BulletGun>(config.Prefab, _bulletRoot, position);
+            var bullet = await _spawnSystem.SpawnObject<BulletComponent>(config.Prefab, _bulletRoot, position);
             bullet.Init(config, direction, _cameraView, _tokenSource);
             _bullets.Add(bullet);
             return bullet;
@@ -37,7 +37,7 @@ namespace Gameplay.Gun
 
         public async UniTask DestroyBullet(IBulletComponent bullet)
         {
-            var bulletGun = bullet as BulletGun;
+            var bulletGun = bullet as BulletComponent;
             _bullets.RemoveWithReplaceLast(bulletGun);
             await _spawnSystem.DestroyObject(bulletGun);
         }

@@ -20,8 +20,8 @@ namespace Gameplay.Enemy
         private readonly ICameraView _cameraView;
         private readonly Transform _root;
         private readonly IObjectSpawnSystem _spawnSystem;
-        private readonly CancellationTokenSource _tokenSource;
         private int _lastAsteroidId;
+        private CancellationTokenSource _tokenSource;
 
         public AsteroidsView(Transform root, ICameraView cameraView, IObjectSpawnSystem spawnSystem,
             CancellationTokenSource tokenSource)
@@ -65,6 +65,7 @@ namespace Gameplay.Enemy
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
+            _tokenSource = tokenSource;
             foreach (var asteroid in _asteroids)
             {
                 asteroid.SetupTokenSource(tokenSource);

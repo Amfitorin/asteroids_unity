@@ -10,7 +10,7 @@ namespace Gameplay.CameraView
     public class CameraView : ICameraView
     {
         private readonly Camera _camera;
-        private Plane[] _planes = new Plane[6];
+        private readonly Plane[] _planes = new Plane[6];
 
         public CameraView(Camera camera)
         {
@@ -27,6 +27,7 @@ namespace Gameplay.CameraView
             GeometryUtility.CalculateFrustumPlanes(_camera, _planes);
         }
 
+        public Camera Camera => _camera;
         public float ConstZ => _camera.farClipPlane - 10f;
         public Vector3 ScreenCenter { get; }
 
@@ -51,6 +52,23 @@ namespace Gameplay.CameraView
                 var viewport = new Vector3(randomX > borderSize ? 1f - doubleBorder + randomX : randomX,
                     randomY > borderSize ? 1f - doubleBorder + randomY : randomY, ConstZ);
                 return _camera.ViewportToWorldPoint(viewport);
+            }
+        }
+
+        public (Vector3, Vector3) RandomPointOnSideBorder
+        {
+            get
+            {
+                const float borderSize = 0.1f;
+                const float doubleBorder = borderSize * 2;
+                var randomX = Random.Range(0f, doubleBorder);
+                var randomY = Random.Range(0f, 1f);
+
+                var direction = randomX > borderSize ? Vector3.left : Vector3.right;
+
+                var viewport = new Vector3(randomX > borderSize ? 1f - doubleBorder + randomX : randomX, randomY,
+                    ConstZ);
+                return (_camera.ViewportToWorldPoint(viewport), direction);
             }
         }
 

@@ -31,8 +31,7 @@ namespace Gameplay.Enemy
 
         private void OnDestroy()
         {
-            _lifeToken?.Cancel();
-            _lifeToken = null;
+            ClearToken();
         }
 
         private void OnValidate()

@@ -18,13 +18,22 @@ namespace Model.Configs.Enemy
         private RangeFloat _duration;
 
         [SerializeField]
-        private BulletGunConfigLink _gun;
+        private AutomaticBulletGunConfigLink _gun;
+
+        [SerializeField]
+        private RangeFloat _changeDirectionDuration;
+
+        [SerializeField]
+        private RangeFloat _speed;
+
+        public RangeFloat ChangeDirectionDuration => _changeDirectionDuration;
 
         public GameObjectLink Prefab => _prefab;
 
         public RangeFloat Duration => _duration;
 
-        public BulletGunConfigLink Gun => _gun;
+        public AutomaticBulletGunConfigLink Gun => _gun;
+        public RangeFloat Speed => _speed;
     }
 
     [Serializable]

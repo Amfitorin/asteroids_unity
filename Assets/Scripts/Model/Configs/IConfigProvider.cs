@@ -1,5 +1,6 @@
 using Model.Configs.Level;
 using Model.Configs.Player;
+using Model.Configs.Pool;
 
 namespace Model.Configs
 {
@@ -7,5 +8,6 @@ namespace Model.Configs
     {
         PLayerConfig PLayerConfig { get; }
         LevelsConfig LevelsConfig { get; }
+        PoolSettingsConfig PoolSettings { get; }
     }
 }

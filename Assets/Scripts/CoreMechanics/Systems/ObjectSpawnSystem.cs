@@ -57,6 +57,7 @@ namespace CoreMechanics.Systems
                 return;
             }
 
+            await UniTask.SwitchToMainThread();
             Object.Destroy(gameObject);
         }
 

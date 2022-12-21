@@ -51,6 +51,7 @@ namespace Gameplay.Gameplay
             BulletView = new BulletView(_spawnSystem, Camera, tokenSource, _enemyRoot);
             AsteroidsView = new AsteroidsView(_enemyRoot, Camera, _spawnSystem, tokenSource);
             LaserView = new LaserView(Camera);
+            NloView = new NloView(_spawnSystem, Camera, tokenSource, _enemyRoot);
         }
     }
 }

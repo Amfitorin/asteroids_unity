@@ -88,7 +88,6 @@ namespace GameplayMechanics.Gun
                 await _regenTimer.ToUniTask(progress: _progress);
                 _charges++;
                 _regenTimer.Reset();
-                Debug.LogError("New charge");
             }
         }
 

@@ -5,6 +5,7 @@ namespace GameplayMechanics.Enemy
 {
     public interface IAsteroidMechanic : IGameplayMechanic
     {
+        bool HasEnemies { get; }
         UniTask WaitDieAllElements();
     }
 }

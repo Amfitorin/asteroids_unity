@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Threading;
-using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using Gameplay.Gameplay;
+using Gameplay.ViewApi.Gameplay;
 using GameplayMechanics.App;
-using GameplayMechanics.Configs;
 using GameplayMechanics.Enemy;
 using GameplayMechanics.PLayers;
+using Model.Configs;
 using UnityEngine;
 
 namespace GameplayMechanics.MainMechanic
@@ -15,15 +14,15 @@ namespace GameplayMechanics.MainMechanic
     public class GameplayMechanic : IGameplayMechanic
     {
         private readonly IAppController _appController;
-        private readonly ConfigProvider _configProvider;
-        private readonly GameplayController _controller;
+        private readonly IConfigProvider _configProvider;
+        private readonly IGameplayController _controller;
+        private int _currentLevel;
+        private IEnemyMechanic _enemyMechanic;
         private List<IGameplayMechanic> _gameplayMechanics;
         private CancellationTokenSource _tokenSource;
-        private int _currentLevel;
-        private EnemyMechanic _enemyMechanic;
 
-        public GameplayMechanic(IAppController appController, GameplayController controller,
-            ConfigProvider configProvider, IObjectSpawnSystem objectSpawnSystem)
+        public GameplayMechanic(IAppController appController, IGameplayController controller,
+            IConfigProvider configProvider)
         {
             _appController = appController;
             _controller = controller;
@@ -34,21 +33,9 @@ namespace GameplayMechanics.MainMechanic
             appController.AppEventProvider.AppQuit += AppEventProviderOnAppQuit;
         }
 
-        private void AppEventProviderOnAppQuit()
-        {
-            _appController.AppEventProvider.AppPaused -= AppEventProviderOnAppPaused;
-            _appController.AppEventProvider.AppQuit -= AppEventProviderOnAppQuit;
-            Pause(true).Forget();
-        }
-
         public void Release()
         {
             _gameplayMechanics.ForEach(mechanic => { mechanic.Release(); });
-        }
-
-        private void AppEventProviderOnAppPaused(bool state)
-        {
-            Pause(state).Forget();
         }
 
         public async UniTask StartGame()
@@ -66,29 +53,6 @@ namespace GameplayMechanics.MainMechanic
             SetupLevel(++_currentLevel);
             await UniTask.WhenAll(_gameplayMechanics.Select(x => x.StartGame()));
             RunUpdateLoop();
-        }
-
-        private void PLayerMechanicOnDied()
-        {
-            //GameOver
-        }
-
-        private void EnemyMechanicOnAllDied()
-        {
-            SetupLevel(++_currentLevel);
-            StartNewEnemyLevel().Forget();
-        }
-
-        private async UniTaskVoid StartNewEnemyLevel()
-        {
-            await _enemyMechanic.StartGame();
-        }
-
-
-        private void RunUpdateLoop()
-        {
-            Update().Forget();
-            LateUpdate().Forget();
         }
 
         public void SetupLevel(int level)
@@ -137,6 +101,41 @@ namespace GameplayMechanics.MainMechanic
             Time.timeScale = state ? 0f : 1f;
 
             await UniTask.Yield();
+        }
+
+        private void AppEventProviderOnAppQuit()
+        {
+            _appController.AppEventProvider.AppPaused -= AppEventProviderOnAppPaused;
+            _appController.AppEventProvider.AppQuit -= AppEventProviderOnAppQuit;
+            Pause(true).Forget();
+        }
+
+        private void AppEventProviderOnAppPaused(bool state)
+        {
+            Pause(state).Forget();
+        }
+
+        private void PLayerMechanicOnDied()
+        {
+            //GameOver
+        }
+
+        private void EnemyMechanicOnAllDied()
+        {
+            SetupLevel(++_currentLevel);
+            StartNewEnemyLevel().Forget();
+        }
+
+        private async UniTaskVoid StartNewEnemyLevel()
+        {
+            await _enemyMechanic.StartGame();
+        }
+
+
+        private void RunUpdateLoop()
+        {
+            Update().Forget();
+            LateUpdate().Forget();
         }
     }
 }

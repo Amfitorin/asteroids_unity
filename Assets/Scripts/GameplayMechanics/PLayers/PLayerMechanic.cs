@@ -7,6 +7,7 @@ using Gameplay.ViewApi.Gameplay;
 using Gameplay.ViewApi.Player;
 using GameplayMechanics.Configs;
 using GameplayMechanics.Gun;
+using Model.Configs;
 using Model.Configs.Player;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace GameplayMechanics.PLayers
         private float _slowTime;
         private Vector3 _slowDirection;
 
-        public PLayerMechanic(IGameplayController controller, ConfigProvider provider)
+        public PLayerMechanic(IGameplayController controller, IConfigProvider provider)
         {
             _playerView = controller.PlayerView;
             _playerConfig = provider.PLayerConfig;

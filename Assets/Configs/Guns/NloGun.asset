@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e07e0d71e4846608a452c6d717d6ba1, type: 3}
+  m_Script: {fileID: 11500000, guid: 01b9b69ba5ea4412aeb9540e5c425d86, type: 3}
   m_Name: NloGun
   m_EditorClassIdentifier: 
   _path: Assets/Configs/Guns/NloGun.asset
@@ -19,3 +19,6 @@ MonoBehaviour:
       _path: Assets/Prefabs/Players/BulletGun.prefab
     _bullet:
       _path: Assets/Configs/Guns/Bullets/NloBullet.asset
+  _fireDelay:
+    _minValue: 0.2
+    _maxValue: 1.2

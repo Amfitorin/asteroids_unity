@@ -38,7 +38,6 @@ namespace Core.Utils.Extensions
 
             if (!handle.IsRunned)
             {
-                Debug.Log("Run timer for await");
                 handle.Run();
             }
 

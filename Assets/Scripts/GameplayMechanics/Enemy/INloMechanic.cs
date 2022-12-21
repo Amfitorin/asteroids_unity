@@ -4,6 +4,6 @@ namespace GameplayMechanics.Enemy
 {
     public interface INloMechanic : IGameplayMechanic
     {
-        
+        bool HasNlo { get; }
     }
 }

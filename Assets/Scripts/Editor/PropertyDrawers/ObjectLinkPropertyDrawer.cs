@@ -23,6 +23,7 @@ namespace Editor.PropertyDrawers
     [CustomPropertyDrawer(typeof(PlayerConfigLink))]
     [CustomPropertyDrawer(typeof(LevelsConfigLink))]
     [CustomPropertyDrawer(typeof(PoolSettingsConfigLink))]
+    [CustomPropertyDrawer(typeof(AutomaticBulletGunConfigLink))]
     public class ObjectLinkPropertyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

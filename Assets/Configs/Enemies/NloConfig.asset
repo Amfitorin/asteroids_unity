@@ -20,3 +20,9 @@ MonoBehaviour:
     _maxValue: 15
   _gun:
     _path: Assets/Configs/Guns/NloGun.asset
+  _changeDirectionDuration:
+    _minValue: 0.7
+    _maxValue: 2
+  _speed:
+    _minValue: 1
+    _maxValue: 4

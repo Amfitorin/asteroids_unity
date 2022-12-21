@@ -16,4 +16,4 @@ MonoBehaviour:
   _prefab:
     _path: Assets/Prefabs/Bullets/enemyBullet.prefab
   _speed: 5
-  _lifeTime: 0.7
+  _lifeTime: 3
