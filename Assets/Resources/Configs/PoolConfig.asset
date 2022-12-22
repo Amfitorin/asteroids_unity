@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31740f5687f645feb0d5c59ae8e08ef5, type: 3}
   m_Name: PoolConfig
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/PoolConfig.asset
+  _path: Assets/Resources/Configs/PoolConfig.asset
   _elements:
   - _poolType: 1
     _prefab:
-      _path: Assets/Prefabs/Bullets/playerBullet.prefab
+      _path: Assets/Resources/Prefabs/Bullets/playerBullet.prefab
   - _poolType: 2
     _prefab:
-      _path: Assets/Prefabs/Asteroids/bigAsteroid.prefab
+      _path: Assets/Resources/Prefabs/Asteroids/bigAsteroid.prefab
   - _poolType: 2
     _prefab:
-      _path: Assets/Prefabs/Asteroids/mediumAsteroid.prefab
+      _path: Assets/Resources/Prefabs/Asteroids/mediumAsteroid.prefab
   - _poolType: 2
     _prefab:
-      _path: Assets/Prefabs/Asteroids/smallAsteroid.prefab
+      _path: Assets/Resources/Prefabs/Asteroids/smallAsteroid.prefab
   - _poolType: 2
     _prefab:
-      _path: Assets/Prefabs/Bullets/enemyBullet.prefab
+      _path: Assets/Resources/Prefabs/Bullets/enemyBullet.prefab
   - _poolType: 2
     _prefab:
-      _path: Assets/Prefabs/Players/nlo.prefab
+      _path: Assets/Resources/Prefabs/Players/nlo.prefab

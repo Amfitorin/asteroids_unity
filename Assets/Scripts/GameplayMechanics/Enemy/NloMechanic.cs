@@ -16,12 +16,10 @@ namespace GameplayMechanics.Enemy
 {
     public class NloMechanic : INloMechanic
     {
-        private readonly IConfigProvider _configProvider;
         private readonly IGameplayController _controller;
         private readonly LevelsConfig _levelConfig;
         private readonly INloView _view;
         private AutomaticBulletMechanic _bulletMechanic;
-        private CancellationTokenSource _cancellationTokenSource;
         private DirectionType _currentDirection;
         private NloConfig _currentLevelSettings;
         private CancellationTokenSource _directionToken;
@@ -29,12 +27,9 @@ namespace GameplayMechanics.Enemy
         private INloComponent _nlo;
 
 
-        public NloMechanic(IGameplayController controller, CancellationTokenSource cancellationTokenSource,
-            IConfigProvider configProvider, INloView view)
+        public NloMechanic(IGameplayController controller, IConfigProvider configProvider, INloView view)
         {
             _controller = controller;
-            _cancellationTokenSource = cancellationTokenSource;
-            _configProvider = configProvider;
 
             _levelConfig = configProvider.LevelsConfig;
             _view = view;
@@ -42,7 +37,6 @@ namespace GameplayMechanics.Enemy
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
-            _cancellationTokenSource = tokenSource;
             _view.SetupTokenSource(tokenSource);
         }
 

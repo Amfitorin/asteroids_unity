@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e07e0d71e4846608a452c6d717d6ba1, type: 3}
   m_Name: PlayerBulletGun
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/Guns/PlayerBulletGun.asset
+  _path: Assets/Resources/Configs/Guns/PlayerBulletGun.asset
   _settings:
     _cooldown: 0.4
     _prefab:
-      _path: Assets/Prefabs/Players/BulletGun.prefab
+      _path: Assets/Resources/Prefabs/Players/BulletGun.prefab
     _bullet:
-      _path: Assets/Configs/Guns/Bullets/BulletConfig.asset
+      _path: Assets/Resources/Configs/Guns/Bullets/BulletConfig.asset

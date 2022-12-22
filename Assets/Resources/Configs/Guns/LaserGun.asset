@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49052c8f6fb04f5eb6dcb0f9e48ee08d, type: 3}
   m_Name: LaserGun
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/Guns/LaserGun.asset
+  _path: Assets/Resources/Configs/Guns/LaserGun.asset
   _settings:
     _cooldown: 25
     _prefab:
-      _path: Assets/Prefabs/Players/LaserGun.prefab
+      _path: Assets/Resources/Prefabs/Players/LaserGun.prefab
     _maxCount: 3
     _useDelay: 5
     _time: 2

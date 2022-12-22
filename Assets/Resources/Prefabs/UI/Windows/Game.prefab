@@ -2859,7 +2859,7 @@ MonoBehaviour:
   _player:
     _lifes:
       _lifePrefab:
-        _path: Assets/Prefabs/UI/Windows/Components/PlayerLife.prefab
+        _path: Assets/Resources/Prefabs/UI/Windows/Components/PlayerLife.prefab
       _lifesRoot: {fileID: 5704275684986905644}
     _position: {fileID: 8899171135695391361}
     _rotation: {fileID: 7525887260884739807}

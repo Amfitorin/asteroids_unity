@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c94014ff183d49f082543b03e25bdd9e, type: 3}
   m_Name: BulletConfig
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/Guns/Bullets/BulletConfig.asset
+  _path: Assets/Resources/Configs/Guns/Bullets/BulletConfig.asset
   _prefab:
-    _path: Assets/Prefabs/Bullets/playerBullet.prefab
+    _path: Assets/Resources/Prefabs/Bullets/playerBullet.prefab
   _speed: 7
   _lifeTime: 1

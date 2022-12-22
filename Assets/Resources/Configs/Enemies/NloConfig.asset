@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8da02d592fd4b799f993ab6fcb13ef9, type: 3}
   m_Name: NloConfig
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/Enemies/NloConfig.asset
+  _path: Assets/Resources/Configs/Enemies/NloConfig.asset
   _prefab:
-    _path: Assets/Prefabs/Players/nlo.prefab
+    _path: Assets/Resources/Prefabs/Players/nlo.prefab
   _duration:
     _minValue: 5
     _maxValue: 15
   _gun:
-    _path: Assets/Configs/Guns/NloGun.asset
+    _path: Assets/Resources/Configs/Guns/NloGun.asset
   _changeDirectionDuration:
     _minValue: 0.7
     _maxValue: 2

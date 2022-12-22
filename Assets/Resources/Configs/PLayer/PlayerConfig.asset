@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c76c668ac0b4c7d886d6261fb5c1951, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/PLayer/PlayerConfig.asset
+  _path: Assets/Resources/Configs/PLayer/PlayerConfig.asset
   _prefab:
-    _path: Assets/Prefabs/Players/player.prefab
+    _path: Assets/Resources/Prefabs/Players/player.prefab
   _maxSpeed: 6
   _acceleration: 2
   _slowTime: 1
   _bulletGun:
-    _path: Assets/Configs/Guns/PlayerBulletGun.asset
+    _path: Assets/Resources/Configs/Guns/PlayerBulletGun.asset
   _laserGun:
-    _path: Assets/Configs/Guns/LaserGun.asset
+    _path: Assets/Resources/Configs/Guns/LaserGun.asset
   _rotationSpeed: 0.94

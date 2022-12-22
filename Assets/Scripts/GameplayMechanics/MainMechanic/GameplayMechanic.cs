@@ -47,7 +47,7 @@ namespace GameplayMechanics.MainMechanic
             _controller.StartGame(_configProvider, _tokenSource);
             _enemyMechanic = new EnemyMechanic(_controller, _tokenSource, _configProvider);
             _enemyMechanic.AllDied += EnemyMechanicOnAllDied;
-            _pLayerMechanic = new PLayerMechanic(_controller, _configProvider);
+            _pLayerMechanic = new PLayerMechanic(_controller, _configProvider, _tokenSource);
             _pLayerMechanic.Died += PLayerMechanicOnDied;
             _gameplayMechanics = new List<IGameplayMechanic>
             {

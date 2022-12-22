@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2103c4bfa40319dde9ba59686cde8, type: 3}
   m_Name: MediumAsteroid
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/Enemies/Asteroids/MediumAsteroid.asset
+  _path: Assets/Resources/Configs/Enemies/Asteroids/MediumAsteroid.asset
   _prefab:
-    _path: Assets/Prefabs/Asteroids/mediumAsteroid.prefab
+    _path: Assets/Resources/Prefabs/Asteroids/mediumAsteroid.prefab
   _speed: 2
   _shardCount: 2
   _shard:
-    _path: Assets/Configs/Enemies/Asteroids/SmallAsteroid.asset
+    _path: Assets/Resources/Configs/Enemies/Asteroids/SmallAsteroid.asset
   _sprites:
-  - _path: Assets/Sprites/Asteroids/medium_1.png
-  - _path: Assets/Sprites/Asteroids/medium_2.png
-  - _path: Assets/Sprites/Asteroids/medium_3.png
-  - _path: Assets/Sprites/Asteroids/medium_4.png
+  - _path: Assets/Resources/Sprites/Asteroids/medium_1.png
+  - _path: Assets/Resources/Sprites/Asteroids/medium_2.png
+  - _path: Assets/Resources/Sprites/Asteroids/medium_3.png
+  - _path: Assets/Resources/Sprites/Asteroids/medium_4.png
   _angleSpeed:
     _minValue: -50
     _maxValue: 50

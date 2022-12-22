@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f436f7b2a56443fd8d05e534c81278da, type: 3}
   m_Name: ConfigLEvel
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/Levels/ConfigLEvel.asset
+  _path: Assets/Resources/Configs/Levels/ConfigLEvel.asset
   _levels:
   - _level: 1
     _bigEnemyCount: 3
@@ -22,15 +22,15 @@ MonoBehaviour:
       _asteroids:
       - _type: 1
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/BigAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/BigAsteroid.asset
       - _type: 2
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/MediumAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/MediumAsteroid.asset
       - _type: 3
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/SmallAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/SmallAsteroid.asset
       _nlo:
-        _path: Assets/Configs/Enemies/NloConfig.asset
+        _path: Assets/Resources/Configs/Enemies/NloConfig.asset
   - _level: 2
     _bigEnemyCount: 3
     _mediumEnemyCount: 0
@@ -39,15 +39,15 @@ MonoBehaviour:
       _asteroids:
       - _type: 1
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/BigAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/BigAsteroid.asset
       - _type: 2
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/MediumAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/MediumAsteroid.asset
       - _type: 3
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/SmallAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/SmallAsteroid.asset
       _nlo:
-        _path: Assets/Configs/Enemies/NloConfig.asset
+        _path: Assets/Resources/Configs/Enemies/NloConfig.asset
   - _level: 3
     _bigEnemyCount: 5
     _mediumEnemyCount: 0
@@ -56,15 +56,15 @@ MonoBehaviour:
       _asteroids:
       - _type: 1
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/BigAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/BigAsteroid.asset
       - _type: 2
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/MediumAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/MediumAsteroid.asset
       - _type: 3
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/SmallAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/SmallAsteroid.asset
       _nlo:
-        _path: Assets/Configs/Enemies/NloConfig.asset
+        _path: Assets/Resources/Configs/Enemies/NloConfig.asset
   - _level: 4
     _bigEnemyCount: 5
     _mediumEnemyCount: 2
@@ -73,12 +73,12 @@ MonoBehaviour:
       _asteroids:
       - _type: 1
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/BigAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/BigAsteroid.asset
       - _type: 2
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/MediumAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/MediumAsteroid.asset
       - _type: 3
         _config:
-          _path: Assets/Configs/Enemies/Asteroids/SmallAsteroid.asset
+          _path: Assets/Resources/Configs/Enemies/Asteroids/SmallAsteroid.asset
       _nlo:
-        _path: Assets/Configs/Enemies/NloConfig.asset
+        _path: Assets/Resources/Configs/Enemies/NloConfig.asset

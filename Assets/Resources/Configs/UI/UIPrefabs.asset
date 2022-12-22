@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66302e2e1214514970716d661f49db7, type: 3}
   m_Name: UIPrefabs
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/UI/UIPrefabs.asset
+  _path: Assets/Resources/Configs/UI/UIPrefabs.asset
   _mainMenuScreen:
-    _path: Assets/Prefabs/UI/Windows/MainMenu.prefab
+    _path: Assets/Resources/Prefabs/UI/Windows/MainMenu.prefab
   _gameScreen:
-    _path: Assets/Prefabs/UI/Windows/Game.prefab
+    _path: Assets/Resources/Prefabs/UI/Windows/Game.prefab

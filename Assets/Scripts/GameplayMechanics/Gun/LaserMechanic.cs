@@ -19,6 +19,7 @@ namespace GameplayMechanics.Gun
         private readonly Timer _useTimer;
         private readonly ILaserView _view;
         private int _charges;
+        private CancellationTokenSource _globalToken;
         private bool _isCoolDown;
         private Transform _parent;
 
@@ -26,6 +27,7 @@ namespace GameplayMechanics.Gun
         {
             _config = config;
             _view = view;
+            _globalToken = globalToken;
             _regenTimer = new Timer(config.Settings.Cooldown, globalToken);
             _useTimer = new Timer(config.Settings.Time, globalToken);
             _cooldownProgress = new Progress<float>(progress =>
@@ -34,6 +36,7 @@ namespace GameplayMechanics.Gun
                 UseProgress?.Invoke(_useTimer.TotalSeconds - _useTimer.CurrentTime));
             StartTimer().Forget();
         }
+
 
         private bool HasCharge => _charges > 0;
 
@@ -56,6 +59,7 @@ namespace GameplayMechanics.Gun
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
+            _globalToken = tokenSource;
         }
 
         public bool IsActive { get; private set; }
@@ -90,7 +94,7 @@ namespace GameplayMechanics.Gun
             ChargesChanged?.Invoke(_charges, false);
 
             IsActive = true;
-            await _useTimer.ToUniTask(progress: _useProgress);
+            await _useTimer.ToUniTask(progress: _useProgress, cancellationToken: _globalToken.Token);
             LaserCancelled?.Invoke();
             _useTimer.Reset();
             Die();
@@ -100,7 +104,7 @@ namespace GameplayMechanics.Gun
         {
             while (_charges < _config.Settings.MaxCount)
             {
-                await _regenTimer.ToUniTask(progress: _cooldownProgress);
+                await _regenTimer.ToUniTask(progress: _cooldownProgress, cancellationToken: _globalToken.Token);
                 _charges++;
                 _regenTimer.Reset();
                 ChargesChanged?.Invoke(_charges, _charges == _config.Settings.MaxCount);

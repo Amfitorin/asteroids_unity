@@ -29,14 +29,15 @@ namespace GameplayMechanics.PLayers
 
         private float _speed;
 
-        public PLayerMechanic(IGameplayController controller, IConfigProvider provider)
+        public PLayerMechanic(IGameplayController controller, IConfigProvider provider,
+            CancellationTokenSource tokenSource)
         {
             _playerView = controller.PlayerView;
             _playerConfig = provider.PLayerConfig;
             _cameraView = controller.Camera;
             _baseGunMechanic = new BulletMechanic(provider.PLayerConfig.BulletGun, controller.BulletView, BaseGunPoint,
                 () => _playerTransform.up.normalized);
-            _extraGunMechanic = new LaserMechanic(provider.PLayerConfig.LaserGun, controller.LaserView, null);
+            _extraGunMechanic = new LaserMechanic(provider.PLayerConfig.LaserGun, controller.LaserView, tokenSource);
         }
 
         public async UniTask StartGame()

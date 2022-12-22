@@ -8,9 +8,6 @@ namespace CoreMechanics.Loaders
 {
     public sealed class AssetLoader : AssetLoaderBase
     {
-        private readonly Dictionary<string, AssetBundle> _assetsList = new();
-        private readonly Dictionary<string, AssetBundle> _bundles = new();
-
         private readonly IAssetLoaderCache _loaderCache;
         private PackInfo[] _externalPackInfos;
 
@@ -20,7 +17,6 @@ namespace CoreMechanics.Loaders
         {
             _loaderCache = loaderCache;
         }
-
 
         public override void Release()
         {
@@ -39,16 +35,18 @@ namespace CoreMechanics.Loaders
             path = GetAssetPath(path);
             var obj = _loaderCache.GetFromCache(path) as T;
             if (obj != null)
-                return obj;
-
-
-            if (!_loaderCache.PutToCache(path, obj))
             {
-                Debug.LogErrorFormat("Can't load asset '{0}' with type {1} from bundle '{2}'", path, typeof(T), "");
-                return null;
+                return obj;
             }
 
-            return obj;
+
+            if (_loaderCache.PutToCache(path, obj))
+            {
+                return obj;
+            }
+
+            Debug.LogErrorFormat("Can't load asset '{0}' with type {1}", path, typeof(T));
+            return null;
         }
 
         public override IEnumerator Load<T>(string path, Action<T> callback)

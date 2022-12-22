@@ -39,13 +39,14 @@ namespace UIController.Game
         {
             _view = view;
             StartSeekPlayer().Forget();
+            _asteroids.AsteroidDie += OnAsteroidDie;
+            _asteroids.AsteroidsSpawned += OnAsteroidsSpawn;
             CheckAsteroids();
             _view.SetupLevel(_mainMechanic.CurrentLevel);
             _view.SetCharges(_playerMechanic.Laser.ChargesCount);
             _view.TimeUse(0f);
 
-            _asteroids.AsteroidDie += OnAsteroidDie;
-            _asteroids.AsteroidsSpawned += OnAsteroidsSpawn;
+           
             _nlo.NloChanged += OnNloChanged;
             _mainMechanic.LevelChanged += OnLevelChanged;
             _playerMechanic.Laser.ChargesChanged += OnChargesChanged;
@@ -142,17 +143,11 @@ namespace UIController.Game
 
         private void CheckAsteroids()
         {
-            var big = 0;
-            var medium = 0;
-            var small = 0;
             foreach (var component in _asteroids.Asteroids)
             {
                 ChangeAsteroidsCount(component.SpawnData.Config.Type, 1);
             }
-
-            _bigAsteroids = big;
-            _medAsteroids = medium;
-            _smallAsteroids = small;
+            
             UpdateAsteroidsCount();
         }
 

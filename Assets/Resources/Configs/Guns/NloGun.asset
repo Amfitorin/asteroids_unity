@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b9b69ba5ea4412aeb9540e5c425d86, type: 3}
   m_Name: NloGun
   m_EditorClassIdentifier: 
-  _path: Assets/Configs/Guns/NloGun.asset
+  _path: Assets/Resources/Configs/Guns/NloGun.asset
   _settings:
     _cooldown: 3
     _prefab:
-      _path: Assets/Prefabs/Players/BulletGun.prefab
+      _path: Assets/Resources/Prefabs/Players/BulletGun.prefab
     _bullet:
-      _path: Assets/Configs/Guns/Bullets/NloBullet.asset
+      _path: Assets/Resources/Configs/Guns/Bullets/NloBullet.asset
   _fireDelay:
     _minValue: 0.2
     _maxValue: 1.2

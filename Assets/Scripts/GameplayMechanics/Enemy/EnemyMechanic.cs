@@ -16,7 +16,7 @@ namespace GameplayMechanics.Enemy
             IConfigProvider provider)
         {
             _asteroidsMechanic = new AsteroidMechanic(controller, provider, controller.AsteroidsView);
-            _nloMechanic = new NloMechanic(controller, tokenSource, provider, controller.NloView);
+            _nloMechanic = new NloMechanic(controller, provider, controller.NloView);
         }
 
         public async UniTask StartGame()

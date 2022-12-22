@@ -172,13 +172,13 @@ MonoBehaviour:
   _uiScene: screenScene
   _configs:
     _levels:
-      _path: Assets/Configs/Levels/ConfigLEvel.asset
+      _path: Assets/Resources/Configs/Levels/ConfigLEvel.asset
     _player:
-      _path: Assets/Configs/PLayer/PlayerConfig.asset
+      _path: Assets/Resources/Configs/PLayer/PlayerConfig.asset
     _poolSettings:
-      _path: Assets/Configs/PoolConfig.asset
+      _path: Assets/Resources/Configs/PoolConfig.asset
     _uiPrefabs:
-      _path: Assets/Configs/UI/UIPrefabs.asset
+      _path: Assets/Resources/Configs/UI/UIPrefabs.asset
   _eventProvider: {fileID: 553084054}
 --- !u!114 &553084054
 MonoBehaviour:
