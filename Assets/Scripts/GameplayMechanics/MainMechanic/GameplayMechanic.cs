@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -6,12 +7,15 @@ using Gameplay.ViewApi.Gameplay;
 using GameplayMechanics.App;
 using GameplayMechanics.Enemy;
 using GameplayMechanics.PLayers;
+using MechanicsApi.Enemy;
+using MechanicsApi.Gameplay;
+using MechanicsApi.Player;
 using Model.Configs;
 using UnityEngine;
 
 namespace GameplayMechanics.MainMechanic
 {
-    public class GameplayMechanic : IGameplayMechanic
+    public class GameplayMechanic : IMainMechanic
     {
         private readonly IAppController _appController;
         private readonly IConfigProvider _configProvider;
@@ -20,6 +24,7 @@ namespace GameplayMechanics.MainMechanic
         private IEnemyMechanic _enemyMechanic;
         private List<IGameplayMechanic> _gameplayMechanics;
         private CancellationTokenSource _tokenSource;
+        private IPlayerMechanic _pLayerMechanic;
 
         public GameplayMechanic(IAppController appController, IGameplayController controller,
             IConfigProvider configProvider)
@@ -28,7 +33,6 @@ namespace GameplayMechanics.MainMechanic
             _controller = controller;
             _configProvider = configProvider;
             _tokenSource = new CancellationTokenSource();
-            StartGame().Forget();
             appController.AppEventProvider.AppPaused += AppEventProviderOnAppPaused;
             appController.AppEventProvider.AppQuit += AppEventProviderOnAppQuit;
         }
@@ -43,11 +47,11 @@ namespace GameplayMechanics.MainMechanic
             _controller.StartGame(_configProvider, _tokenSource);
             _enemyMechanic = new EnemyMechanic(_controller, _tokenSource, _configProvider);
             _enemyMechanic.AllDied += EnemyMechanicOnAllDied;
-            var pLayerMechanic = new PLayerMechanic(_controller, _configProvider);
-            pLayerMechanic.Died += PLayerMechanicOnDied;
+            _pLayerMechanic = new PLayerMechanic(_controller, _configProvider);
+            _pLayerMechanic.Died += PLayerMechanicOnDied;
             _gameplayMechanics = new List<IGameplayMechanic>
             {
-                pLayerMechanic,
+                _pLayerMechanic,
                 _enemyMechanic
             };
             SetupLevel(++_currentLevel);
@@ -103,6 +107,13 @@ namespace GameplayMechanics.MainMechanic
             await UniTask.Yield();
         }
 
+        public event Action<int> LevelChanged;
+        public IPlayerMechanic PlayerMechanic => _pLayerMechanic;
+        public IEnemyMechanic EnemyMechanic => _enemyMechanic;
+        public IAsteroidMechanic AsteroidMechanic => _enemyMechanic.AsteroidMechanic;
+        public INloMechanic Nlo => _enemyMechanic.Nlo;
+        public int CurrentLevel => _currentLevel;
+
         private void AppEventProviderOnAppQuit()
         {
             _appController.AppEventProvider.AppPaused -= AppEventProviderOnAppPaused;
@@ -123,6 +134,7 @@ namespace GameplayMechanics.MainMechanic
         private void EnemyMechanicOnAllDied()
         {
             SetupLevel(++_currentLevel);
+            LevelChanged?.Invoke(_currentLevel);
             StartNewEnemyLevel().Forget();
         }
 

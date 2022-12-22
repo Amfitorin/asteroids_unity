@@ -3,6 +3,7 @@ using System.Threading;
 using Core.Utils.Extensions;
 using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.Gun;
+using MechanicsApi.Gun;
 using Model.Configs.Gun;
 using Model.Gun;
 using UnityEngine;

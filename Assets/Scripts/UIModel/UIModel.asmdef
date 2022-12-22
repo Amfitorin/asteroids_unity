@@ -23,5 +23,6 @@
   "autoReferenced": true,
   "defineConstraints": [],
   "versionDefines": [],
-  "noEngineReferences": false
+  "noEngineReferences": false,
+  "references":[ "GUID:97def1539f1d0df4b9cdfc56cca18b1a", "GUID:7c5ef0dc40424bb8846ca33ee5bf75d8" ]
 }

@@ -27,3 +27,4 @@ MonoBehaviour:
   _angleSpeed:
     _minValue: -15
     _maxValue: 15
+  _type: 1

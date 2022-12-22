@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.Enemy;
 using Gameplay.ViewApi.Gameplay;
 using GameplayMechanics.Gun;
+using MechanicsApi.Enemy;
 using Model.Configs;
 using Model.Configs.Enemy;
 using Model.Configs.Level;
@@ -58,16 +59,8 @@ namespace GameplayMechanics.Enemy
             ResetLevelToken();
         }
 
+        public event Action NloChanged;
         public bool HasNlo => _nlo != null;
-
-        public async UniTaskVoid LateUpdate()
-        {
-            if (_bulletMechanic != null)
-            {
-                _bulletMechanic.LateUpdate().Forget();
-                await UniTask.Yield();
-            }
-        }
 
         private async UniTaskVoid StartSpawnTimer()
         {
@@ -94,6 +87,7 @@ namespace GameplayMechanics.Enemy
             _directionToken.Cancel();
             _nlo = null;
             _bulletMechanic = null;
+            NloChanged?.Invoke();
             StartSpawnTimer().Forget();
         }
 
@@ -139,6 +133,7 @@ namespace GameplayMechanics.Enemy
         {
             var (position, direction) = _controller.Camera.RandomPointOnSideBorder;
             _nlo = await _view.Spawn(_currentLevelSettings, position, direction);
+            NloChanged?.Invoke();
         }
 
         private void ResetLevelToken()

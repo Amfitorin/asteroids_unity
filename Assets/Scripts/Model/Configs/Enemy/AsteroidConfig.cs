@@ -3,6 +3,7 @@ using CoreMechanics.Managers.Configs;
 using CoreMechanics.ObjectLinks.Configs;
 using CoreMechanics.ObjectLinks.UnityObjectLink;
 using Model.CustomTypes;
+using Model.EnvObject;
 using UnityEngine;
 
 namespace Model.Configs.Enemy
@@ -28,6 +29,8 @@ namespace Model.Configs.Enemy
         [SerializeField]
         private RangeFloat _angleSpeed;
 
+        [SerializeField]
+        private AsteroidType _type;
         public RangeFloat AngleSpeed => _angleSpeed;
 
         public AsteroidConfigLink Shard => _shard;
@@ -39,6 +42,8 @@ namespace Model.Configs.Enemy
         public int ShardCount => _shardCount;
 
         public SpriteLink[] Sprites => _sprites;
+
+        public AsteroidType Type => _type;
     }
 
     [Serializable]

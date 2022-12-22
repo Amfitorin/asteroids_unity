@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.Gameplay;
+using MechanicsApi.Enemy;
 using Model.Configs;
 
 namespace GameplayMechanics.Enemy
@@ -38,12 +39,8 @@ namespace GameplayMechanics.Enemy
             _nloMechanic.SetupTokenSource(tokenSource);
         }
 
-        public async UniTaskVoid LateUpdate()
-        {
-            _nloMechanic.LateUpdate().Forget();
-            await UniTask.Yield();
-        }
-
+        public IAsteroidMechanic AsteroidMechanic => _asteroidsMechanic;
+        public INloMechanic Nlo => _nloMechanic;
         public event Action AllDied;
 
         private async UniTaskVoid WaitCancelLevel()

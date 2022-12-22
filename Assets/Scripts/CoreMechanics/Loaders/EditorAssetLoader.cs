@@ -1,9 +1,10 @@
-#if UNITY_EDITOR
 using System;
 using System.Collections;
 using System.IO;
 using Core.Utils.Extensions;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace CoreMechanics.Loaders
@@ -25,12 +26,16 @@ namespace CoreMechanics.Loaders
         {
             if (string.IsNullOrEmpty(fullAssetName))
                 return false;
-
+#if UNITY_EDITOR
             return File.Exists(fullAssetName) && !AssetDatabase.AssetPathToGUID(fullAssetName).IsNullOrEmpty();
+#else
+            return false;
+#endif
         }
 
         public override T Load<T>(string path)
         {
+#if UNITY_EDITOR
             if (path.IsNullOrEmpty()) return null;
 
             path = GetAssetPath(path);
@@ -42,6 +47,9 @@ namespace CoreMechanics.Loaders
             if (_loaderCache.PutToCache(path, obj)) return obj;
             Debug.LogErrorFormat("Can't load asset '{0}' with type {1}", path, typeof(T));
             return null;
+#else
+            return null;
+#endif
         }
 
         public override IEnumerator Load<T>(string path, Action<T> callback)
@@ -60,4 +68,3 @@ namespace CoreMechanics.Loaders
         }
     }
 }
-#endif

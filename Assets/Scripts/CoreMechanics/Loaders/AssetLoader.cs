@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Core.Utils.Extensions;
-using UnityEditor.Build.Content;
 using UnityEngine;
 
 namespace CoreMechanics.Loaders
@@ -13,7 +12,6 @@ namespace CoreMechanics.Loaders
         private readonly Dictionary<string, AssetBundle> _bundles = new();
 
         private readonly IAssetLoaderCache _loaderCache;
-        private readonly Dictionary<string, AssetBundleInfo> _metadata = new();
         private PackInfo[] _externalPackInfos;
 
         private IDisposable _metadataLoader;

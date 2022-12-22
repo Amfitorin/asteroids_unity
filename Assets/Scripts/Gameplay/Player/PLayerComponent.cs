@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
@@ -7,7 +8,6 @@ using Gameplay.Gun;
 using Gameplay.ViewApi.Gun;
 using Model.Configs.Player;
 using UnityEngine;
-using Action = Unity.Plastic.Newtonsoft.Json.Serialization.Action;
 
 namespace Gameplay.Player
 {

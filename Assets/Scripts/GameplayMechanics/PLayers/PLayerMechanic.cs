@@ -5,8 +5,9 @@ using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.CameraView;
 using Gameplay.ViewApi.Gameplay;
 using Gameplay.ViewApi.Player;
-using GameplayMechanics.Configs;
 using GameplayMechanics.Gun;
+using MechanicsApi.Gun;
+using MechanicsApi.Player;
 using Model.Configs;
 using Model.Configs.Player;
 using UnityEngine;
@@ -15,18 +16,18 @@ namespace GameplayMechanics.PLayers
 {
     public class PLayerMechanic : IPlayerMechanic
     {
+        private readonly IGunMechanic _baseGunMechanic;
         private readonly ICameraView _cameraView;
         private readonly PLayerConfig _playerConfig;
         private readonly IPlayerView _playerView;
-        private Transform _playerTransform;
-        private readonly IGunMechanic _baseGunMechanic;
+        private float _currentMaxSpeed;
+        private Vector3 _direction = Vector3.zero;
         private ILaserMechanic _extraGunMechanic;
+        private Transform _playerTransform;
+        private Vector3 _slowDirection;
+        private float _slowTime;
 
         private float _speed;
-        private Vector3 _direction = Vector3.zero;
-        private float _currentMaxSpeed;
-        private float _slowTime;
-        private Vector3 _slowDirection;
 
         public PLayerMechanic(IGameplayController controller, IConfigProvider provider)
         {
@@ -38,11 +39,6 @@ namespace GameplayMechanics.PLayers
             _extraGunMechanic = new LaserMechanic(provider.PLayerConfig.LaserGun, controller.LaserView, null);
         }
 
-        private Vector3 BaseGunPoint()
-        {
-            return _playerView.BaseGunTransform().position;
-        }
-
         public async UniTask StartGame()
         {
             _playerTransform = await _playerView.SpawnPLayer(_playerConfig, _cameraView.ScreenCenter);
@@ -50,7 +46,10 @@ namespace GameplayMechanics.PLayers
             _playerView.ApplySpeed(0f);
         }
 
+        public ILaserMechanic Laser => _extraGunMechanic;
         public event Action Died;
+        public Transform PlayerTransform => _playerTransform;
+        public float CurrentSpeed => _speed;
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
@@ -118,6 +117,11 @@ namespace GameplayMechanics.PLayers
             _extraGunMechanic.LateUpdate().Forget();
 
             await UniTask.Yield();
+        }
+
+        private Vector3 BaseGunPoint()
+        {
+            return _playerView.BaseGunTransform().position;
         }
     }
 }

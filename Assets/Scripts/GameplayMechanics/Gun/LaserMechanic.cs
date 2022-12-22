@@ -3,6 +3,7 @@ using System.Threading;
 using Core.Utils.Extensions;
 using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.Gun;
+using MechanicsApi.Gun;
 using Model.Configs.Gun;
 using UnityEngine;
 using Timer = Core.Time.Timer;
@@ -12,8 +13,10 @@ namespace GameplayMechanics.Gun
     public class LaserMechanic : ILaserMechanic
     {
         private readonly LaserGunConfig _config;
-        private readonly Progress<float> _progress;
+        private readonly Progress<float> _cooldownProgress;
         private readonly Timer _regenTimer;
+        private readonly Progress<float> _useProgress;
+        private readonly Timer _useTimer;
         private readonly ILaserView _view;
         private int _charges;
         private bool _isCoolDown;
@@ -24,7 +27,11 @@ namespace GameplayMechanics.Gun
             _config = config;
             _view = view;
             _regenTimer = new Timer(config.Settings.Cooldown, globalToken);
-            _progress = new Progress<float>(progress => CooldownProgress?.Invoke(progress));
+            _useTimer = new Timer(config.Settings.Time, globalToken);
+            _cooldownProgress = new Progress<float>(progress =>
+                CooldownProgress?.Invoke(_regenTimer.CurrentTime, _regenTimer.TotalSeconds));
+            _useProgress = new Progress<float>(progress =>
+                UseProgress?.Invoke(_useTimer.TotalSeconds - _useTimer.CurrentTime));
             StartTimer().Forget();
         }
 
@@ -59,7 +66,11 @@ namespace GameplayMechanics.Gun
             IsActive = false;
         }
 
-        public event Action<float> CooldownProgress;
+        public event Action<float> UseProgress;
+        public event Action LaserCancelled;
+        public event Action<int, bool> ChargesChanged;
+        public event Action<float, float> CooldownProgress;
+        public int ChargesCount => _charges;
 
         public void Init(ILaserComponent laser, Transform parent)
         {
@@ -76,8 +87,12 @@ namespace GameplayMechanics.Gun
                 StartTimer().Forget();
             }
 
+            ChargesChanged?.Invoke(_charges, false);
+
             IsActive = true;
-            await UniTask.Delay(_config.Settings.Time.AsMS());
+            await _useTimer.ToUniTask(progress: _useProgress);
+            LaserCancelled?.Invoke();
+            _useTimer.Reset();
             Die();
         }
 
@@ -85,9 +100,10 @@ namespace GameplayMechanics.Gun
         {
             while (_charges < _config.Settings.MaxCount)
             {
-                await _regenTimer.ToUniTask(progress: _progress);
+                await _regenTimer.ToUniTask(progress: _cooldownProgress);
                 _charges++;
                 _regenTimer.Reset();
+                ChargesChanged?.Invoke(_charges, _charges == _config.Settings.MaxCount);
             }
         }
 

@@ -1,0 +1,10 @@
+{
+  "name": "MechanicsApi",
+  "references": [
+    "GUID:97def1539f1d0df4b9cdfc56cca18b1a",
+    "GUID:f51ebe6a0ceec4240a699833d6309b23",
+    "GUID:3aa7d6caf84446daa563d57c0f1dac4c",
+    "GUID:805912e66f4e1354694264d2dac4f21a",
+    "GUID:8dde9aabfb604e86bc8dfc2adcd1fb62"
+  ]
+}

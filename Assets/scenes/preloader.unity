@@ -177,6 +177,8 @@ MonoBehaviour:
       _path: Assets/Configs/PLayer/PlayerConfig.asset
     _poolSettings:
       _path: Assets/Configs/PoolConfig.asset
+    _uiPrefabs:
+      _path: Assets/Configs/UI/UIPrefabs.asset
   _eventProvider: {fileID: 553084054}
 --- !u!114 &553084054
 MonoBehaviour:

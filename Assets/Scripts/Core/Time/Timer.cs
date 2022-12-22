@@ -23,6 +23,9 @@ namespace Core.Time
             Reset();
         }
 
+        public float TotalSeconds => _seconds;
+        public float CurrentTime => _time;
+
         public bool IsDone => Mathf.Approximately(_seconds, 0f) || _time > _seconds;
         public float PercentComplete => Mathf.Approximately(_seconds, 0f) ? 1f : Mathf.Clamp01(_time / _seconds);
 
@@ -93,6 +96,5 @@ namespace Core.Time
                 Completed?.Invoke();
             }
         }
-
     }
 }

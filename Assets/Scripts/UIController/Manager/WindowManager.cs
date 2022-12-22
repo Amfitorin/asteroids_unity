@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.Singleton;
 using CoreMechanics.ObjectLinks.UnityObjectLink;
+using UI.View.Screen;
+using UI.ViewApi.View;
 using UIController.Screen;
+using UIModel.Window;
 using UnityEngine;
 
 namespace UIController.Manager
@@ -80,7 +83,7 @@ namespace UIController.Manager
                 Debug.LogErrorFormat("[WindowManager] The screen is already opening {0}", prefab.name);
 
             var data = windowData ?? new WindowData();
-            data.Prefab = prefabLink;
+            data.SetupPrefab(prefabLink);
             OpenScreenRoutine(data, pushCurrentToStack);
         }
 
@@ -95,8 +98,7 @@ namespace UIController.Manager
                 CloseScreenRoutine();
             }
 
-            // var windowObject = Object.Instantiate(data.Prefab.Resource, WindowCanvas.Current.ScreensRectTransform);
-            var windowObject = Object.Instantiate(data.Prefab.Resource, null);
+            var windowObject = Object.Instantiate(data.Prefab.Resource, WindowCanvas.Current.ScreensRectTransform);
 
             var screen = windowObject.GetComponent<ScreenBehaviour>();
 
@@ -144,7 +146,7 @@ namespace UIController.Manager
         private void OpenWindow<TView>(GameObjectLink prefab, WindowViewData<TView> windowData)
             where TView : IWindowView
         {
-            windowData.Prefab = prefab;
+            windowData.SetupPrefab(prefab);
 
             if (_isWindowOpening)
                 if (prefab?.Resource != null)
@@ -157,7 +159,7 @@ namespace UIController.Manager
         private void OpenWindowRoutine<TView>(WindowViewData<TView> windowData) where TView : IWindowView
         {
             _isWindowOpening = true;
-            var obj = Object.Instantiate(windowData.Prefab.Resource, null);
+            var obj = Object.Instantiate(windowData.Prefab.Resource, WindowCanvas.Current.WindowRectTransform);
             var window = obj.GetComponent<WindowBehaviour>();
             if (window == null)
             {

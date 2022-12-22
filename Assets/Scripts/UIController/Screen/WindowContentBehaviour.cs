@@ -1,4 +1,6 @@
 using System;
+using UI.ViewApi.View;
+using UIModel.Window;
 using UnityEngine;
 
 namespace UIController.Screen

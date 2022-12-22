@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Gameplay.App;
 using GameplayMechanics.App;
 using GameplayMechanics.Configs;
+using MechanicsApi.Preload;
 using Model.Configs;
 
 namespace GameplayMechanics.Preload

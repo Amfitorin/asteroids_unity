@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.Enemy;
 using Gameplay.ViewApi.Gameplay;
+using MechanicsApi.Enemy;
 using Model.Configs;
 using Model.Configs.Level;
 using Model.EnvObject;
@@ -14,10 +16,10 @@ namespace GameplayMechanics.Enemy
 {
     public class AsteroidMechanic : IAsteroidMechanic
     {
+        private readonly List<AsyncLazy<Vector3>> _asteroidAwaiters = new();
         private readonly IGameplayController _controller;
         private readonly LevelsConfig _levelConfig;
         private readonly IAsteroidsView _view;
-        private readonly List<AsyncLazy<Vector3>> _asteroidAwaiters = new();
         private List<IAsteroidComponent> _asteroids = new();
         private LevelSettings _currentLevelSettings;
 
@@ -45,6 +47,8 @@ namespace GameplayMechanics.Enemy
             _view.DestroyAsteroids();
         }
 
+        public event Action<IAsteroidComponent> AsteroidDie;
+        public event Action<int, AsteroidType> AsteroidsSpawned;
         public bool HasEnemies => _asteroids.Count > 0;
 
         public async UniTask WaitDieAllElements()
@@ -61,6 +65,8 @@ namespace GameplayMechanics.Enemy
                 await DieObject(awaited.result, component);
             }
         }
+
+        public IEnumerable<IAsteroidComponent> Asteroids => _asteroids;
 
         private async UniTask<IEnumerable<IAsteroidComponent>> SpawnLevelAsteroids()
         {
@@ -87,7 +93,13 @@ namespace GameplayMechanics.Enemy
             }
 
             var results = await UniTask.WhenAll(tasks);
-            return results.SelectMany(x => x);
+            foreach (var result in results)
+            {
+                AsteroidsSpawned?.Invoke(result.Count, result.First().SpawnData.Config.Type);
+            }
+
+            var asteroids = results.SelectMany(x => x);
+            return asteroids;
         }
 
         private async UniTask DieObject(Vector3 awaitedResult, IAsteroidComponent asteroidComponent)
@@ -98,6 +110,8 @@ namespace GameplayMechanics.Enemy
             {
                 await SpawnShards(awaitedResult, spawnData);
             }
+
+            AsteroidDie?.Invoke(asteroidComponent);
         }
 
         private async UniTask SpawnShards(Vector3 awaitedResult, AsteroidSpawnData spawnData)
@@ -106,6 +120,7 @@ namespace GameplayMechanics.Enemy
                 () => awaitedResult);
             _asteroids.AddRange(shards);
             _asteroidAwaiters.AddRange(shards.Select(x => UniTask.Lazy(x.WaitDie)));
+            AsteroidsSpawned?.Invoke(spawnData.Config.ShardCount, spawnData.Config.Shard.Config.Type);
         }
     }
 }

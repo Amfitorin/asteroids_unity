@@ -1,6 +1,7 @@
 using Core.Utils.Extensions;
 using JetBrains.Annotations;
 using TMPro;
+using UI.View.Screen;
 using UIController.Manager;
 using UnityEngine;
 using UnityEngine.UI;

@@ -8,6 +8,7 @@ using Model.Configs.Gun;
 using Model.Configs.Level;
 using Model.Configs.Player;
 using Model.Configs.Pool;
+using Model.Configs.UI;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ namespace Editor.PropertyDrawers
     [CustomPropertyDrawer(typeof(LevelsConfigLink))]
     [CustomPropertyDrawer(typeof(PoolSettingsConfigLink))]
     [CustomPropertyDrawer(typeof(AutomaticBulletGunConfigLink))]
+    [CustomPropertyDrawer(typeof(UIPrefabsConfigLink))]
     public class ObjectLinkPropertyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

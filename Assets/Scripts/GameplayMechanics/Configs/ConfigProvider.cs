@@ -3,6 +3,7 @@ using Model.Configs;
 using Model.Configs.Level;
 using Model.Configs.Player;
 using Model.Configs.Pool;
+using Model.Configs.UI;
 using UnityEngine;
 
 namespace GameplayMechanics.Configs
@@ -18,6 +19,11 @@ namespace GameplayMechanics.Configs
 
         [SerializeField]
         private PoolSettingsConfigLink _poolSettings;
+        
+        [SerializeField]
+        private UIPrefabsConfigLink _uiPrefabs;
+
+        public UIPrefabsConfig UIPrefabs => _uiPrefabs;
 
         public PLayerConfig PLayerConfig => _player;
         public LevelsConfig LevelsConfig => _levels;
