@@ -1,7 +1,5 @@
-using System;
 using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
-using Gameplay.ViewApi.CameraView;
 using Gameplay.ViewApi.Gun;
 using Gameplay.ViewApi.Player;
 using Model.Configs.Player;
@@ -11,31 +9,28 @@ namespace Gameplay.Player
 {
     public class PlayerView : IPlayerView
     {
-        private readonly ICameraView _camera;
         private readonly Transform _playerRoot;
         private readonly IObjectSpawnSystem _spawnSystem;
         private PLayerComponent _player;
 
-        public PlayerView(Transform playerRoot, ICameraView camera, IObjectSpawnSystem spawnSystem)
+        public PlayerView(Transform playerRoot, IObjectSpawnSystem spawnSystem)
         {
             _playerRoot = playerRoot;
-            _camera = camera;
             _spawnSystem = spawnSystem;
         }
 
-        public event Action Died;
-
         public ILaserComponent Laser => _player.Laser;
 
-        public async UniTask<Transform> SpawnPLayer(PLayerConfig config, Vector3 spawnPosition)
+        public async UniTask<IPlayerComponent> SpawnPLayer(PLayerConfig config, Vector3 spawnPosition)
         {
             _player = await _spawnSystem.SpawnObject<PLayerComponent>(config.Prefab, _playerRoot, spawnPosition);
             await _player.Init(config, _spawnSystem);
-            return _player.transform;
+            return _player;
         }
 
         public async UniTask Despawn()
         {
+            await _player.Destroy();
             await _spawnSystem.DestroyObject(_player);
         }
 

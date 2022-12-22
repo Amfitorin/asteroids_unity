@@ -15,6 +15,7 @@ namespace UI.ViewApi.Game
         void TimeUse(float time);
 
         void UpdatePosition(Transform player, float speed);
+        void SetScore(int score);
 
         void UpdateLifes(int lifes);
         void LaserCancelled();

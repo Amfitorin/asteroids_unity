@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
 
@@ -32,5 +33,7 @@ namespace MechanicsApi.Gameplay
         void SetupLevel(int level)
         {
         }
+
+        UniTask Destroy();
     }
 }

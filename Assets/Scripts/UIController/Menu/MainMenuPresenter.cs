@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using MechanicsApi.App;
 using MechanicsApi.Gameplay;
 using Model.Configs.UI;
 using UI.ViewApi.MainMenu;
@@ -15,12 +16,12 @@ namespace UIController.Menu
 {
     public class MainMenuPresenter : IScreenPresenter<IMainMenuView>
     {
-        private readonly IMainMechanic _gameplayMechanic;
+        private readonly IAppController _appController;
         private readonly UIPrefabsConfig _uiPrefabs;
 
-        public MainMenuPresenter(IMainMechanic gameplayMechanic, UIPrefabsConfig uiPrefabs)
+        public MainMenuPresenter(IAppController appController, UIPrefabsConfig uiPrefabs)
         {
-            _gameplayMechanic = gameplayMechanic;
+            _appController = appController;
             _uiPrefabs = uiPrefabs;
         }
 
@@ -45,10 +46,7 @@ namespace UIController.Menu
 
         private async UniTaskVoid StartNewGame()
         {
-            await _gameplayMechanic.StartGame();
-            WindowManager.Instance.OpenScreen(_uiPrefabs.GameScreen,
-                new GamePresenter(_gameplayMechanic.PlayerMechanic, _gameplayMechanic.AsteroidMechanic,
-                    _gameplayMechanic.Nlo, _gameplayMechanic));
+            await _appController.NewGame();
         }
 
         private void OnResultsClick()

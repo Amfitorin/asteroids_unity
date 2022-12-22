@@ -1,4 +1,5 @@
 using System.Threading;
+using CoreMechanics.Systems;
 using Gameplay.ViewApi.CameraView;
 using Gameplay.ViewApi.Enemy;
 using Gameplay.ViewApi.Gun;
@@ -16,5 +17,6 @@ namespace Gameplay.ViewApi.Gameplay
         IAsteroidsView AsteroidsView { get; }
         INloView NloView { get; }
         void StartGame(IConfigProvider configProvider, CancellationTokenSource tokenSource);
+        void SetupSpawnSystem(IObjectSpawnSystem spawnSystem);
     }
 }

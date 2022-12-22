@@ -14,10 +14,15 @@ namespace Model.Configs.UI
         
         [SerializeField]
         private GameObjectLink _gameScreen;
+        
+        [SerializeField]
+        private GameObjectLink _gameOverWindow;
 
         public GameObjectLink MainMenuScreen => _mainMenuScreen;
 
         public GameObjectLink GameScreen => _gameScreen;
+
+        public GameObjectLink GameOverWindow => _gameOverWindow;
     }
     
     [Serializable]

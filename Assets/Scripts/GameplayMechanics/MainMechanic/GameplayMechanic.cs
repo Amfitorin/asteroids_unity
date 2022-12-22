@@ -7,24 +7,29 @@ using Gameplay.ViewApi.Gameplay;
 using GameplayMechanics.App;
 using GameplayMechanics.Enemy;
 using GameplayMechanics.PLayers;
+using MechanicsApi.App;
 using MechanicsApi.Enemy;
 using MechanicsApi.Gameplay;
 using MechanicsApi.Player;
 using Model.Configs;
+using UIController.Game;
+using UIController.Manager;
 using UnityEngine;
 
 namespace GameplayMechanics.MainMechanic
 {
-    public class GameplayMechanic : IMainMechanic
+    public class GameplayMechanic : IMainMechanic, IPointsController
     {
+        private const string BestScoreKey = "BestPlayerScore";
         private readonly IAppController _appController;
         private readonly IConfigProvider _configProvider;
         private readonly IGameplayController _controller;
+        private int _bestScore = -1;
         private int _currentLevel;
         private IEnemyMechanic _enemyMechanic;
-        private List<IGameplayMechanic> _gameplayMechanics;
-        private CancellationTokenSource _tokenSource;
+        private List<IGameplayMechanic> _gameplayMechanics = new();
         private IPlayerMechanic _pLayerMechanic;
+        private CancellationTokenSource _tokenSource;
 
         public GameplayMechanic(IAppController appController, IGameplayController controller,
             IConfigProvider configProvider)
@@ -44,8 +49,14 @@ namespace GameplayMechanics.MainMechanic
 
         public async UniTask StartGame()
         {
+            var best = PlayerPrefs.GetInt(BestScoreKey, 0);
+            if (best > _bestScore)
+            {
+                _bestScore = best;
+            }
+
             _controller.StartGame(_configProvider, _tokenSource);
-            _enemyMechanic = new EnemyMechanic(_controller, _tokenSource, _configProvider);
+            _enemyMechanic = new EnemyMechanic(_controller, _tokenSource, _configProvider, this);
             _enemyMechanic.AllDied += EnemyMechanicOnAllDied;
             _pLayerMechanic = new PLayerMechanic(_controller, _configProvider, _tokenSource);
             _pLayerMechanic.Died += PLayerMechanicOnDied;
@@ -54,14 +65,23 @@ namespace GameplayMechanics.MainMechanic
                 _pLayerMechanic,
                 _enemyMechanic
             };
+            Score = 0;
             SetupLevel(++_currentLevel);
             await UniTask.WhenAll(_gameplayMechanics.Select(x => x.StartGame()));
+            WindowManager.Instance.OpenScreen(_configProvider.UIPrefabs.GameScreen,
+                new GamePresenter(PlayerMechanic, AsteroidMechanic,
+                    Nlo, this, PointsController));
             RunUpdateLoop();
         }
 
         public void SetupLevel(int level)
         {
             _gameplayMechanics.ForEach(mechanic => { mechanic.SetupLevel(level); });
+        }
+
+        public async UniTask Destroy()
+        {
+            await UniTask.WhenAll(_gameplayMechanics.Select(x => x.Destroy()));
         }
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
@@ -113,6 +133,37 @@ namespace GameplayMechanics.MainMechanic
         public IAsteroidMechanic AsteroidMechanic => _enemyMechanic.AsteroidMechanic;
         public INloMechanic Nlo => _enemyMechanic.Nlo;
         public int CurrentLevel => _currentLevel;
+        public IPointsController PointsController => this;
+
+        public event Action ScoreChanged;
+        public int Score { get; private set; }
+
+        public void AddScore(int count)
+        {
+            Score += count;
+            ScoreChanged?.Invoke();
+        }
+
+        public int BestScore
+        {
+            get
+            {
+                if (_bestScore == -1)
+                {
+                    _bestScore = PlayerPrefs.GetInt(BestScoreKey, 0);
+                }
+
+                return _bestScore;
+            }
+            private set
+            {
+                var best = PlayerPrefs.GetInt(BestScoreKey, 0);
+                if (best == 0 || best < value)
+                {
+                    PlayerPrefs.SetInt(BestScoreKey, value);
+                }
+            }
+        }
 
         private void AppEventProviderOnAppQuit()
         {
@@ -128,7 +179,10 @@ namespace GameplayMechanics.MainMechanic
 
         private void PLayerMechanicOnDied()
         {
-            //GameOver
+            _tokenSource.Cancel();
+            BestScore = Score;
+            WindowManager.Instance.OpenScreen(_configProvider.UIPrefabs.GameOverWindow,
+                new GameOverPresenter(this, this, _appController));
         }
 
         private void EnemyMechanicOnAllDied()

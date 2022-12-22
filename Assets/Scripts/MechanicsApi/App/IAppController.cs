@@ -2,7 +2,7 @@ using CoreMechanics.Scene;
 using Cysharp.Threading.Tasks;
 using Gameplay.App;
 
-namespace GameplayMechanics.App
+namespace MechanicsApi.App
 {
     public interface IAppController
     {
@@ -10,5 +10,6 @@ namespace GameplayMechanics.App
         IAppEventProvider AppEventProvider { get; }
 
         UniTask StartGame();
+        UniTask NewGame();
     }
 }

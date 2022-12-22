@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using MechanicsApi.Enemy;
 using MechanicsApi.Player;
 
@@ -14,5 +15,6 @@ namespace MechanicsApi.Gameplay
         INloMechanic Nlo { get; }
 
         int CurrentLevel { get; }
+        IPointsController PointsController { get; }
     }
 }

@@ -47,7 +47,7 @@ namespace Gameplay.Gameplay
         public void StartGame(IConfigProvider configProvider, CancellationTokenSource tokenSource)
         {
             Camera = new CameraView.CameraView(_camera);
-            PlayerView = new PlayerView(_playerRoot, Camera, _spawnSystem);
+            PlayerView = new PlayerView(_playerRoot, _spawnSystem);
             BulletView = new BulletView(_spawnSystem, Camera, tokenSource, _enemyRoot);
             AsteroidsView = new AsteroidsView(_enemyRoot, Camera, _spawnSystem, tokenSource);
             LaserView = new LaserView(Camera);

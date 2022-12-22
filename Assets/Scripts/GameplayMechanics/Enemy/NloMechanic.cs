@@ -6,6 +6,7 @@ using Gameplay.ViewApi.Enemy;
 using Gameplay.ViewApi.Gameplay;
 using GameplayMechanics.Gun;
 using MechanicsApi.Enemy;
+using MechanicsApi.Gameplay;
 using Model.Configs;
 using Model.Configs.Enemy;
 using Model.Configs.Level;
@@ -19,6 +20,7 @@ namespace GameplayMechanics.Enemy
         private readonly IGameplayController _controller;
         private readonly LevelsConfig _levelConfig;
         private readonly INloView _view;
+        private readonly IPointsController _pointsController;
         private AutomaticBulletMechanic _bulletMechanic;
         private DirectionType _currentDirection;
         private NloConfig _currentLevelSettings;
@@ -27,12 +29,14 @@ namespace GameplayMechanics.Enemy
         private INloComponent _nlo;
 
 
-        public NloMechanic(IGameplayController controller, IConfigProvider configProvider, INloView view)
+        public NloMechanic(IGameplayController controller, IConfigProvider configProvider, INloView view,
+            IPointsController pointsController)
         {
             _controller = controller;
 
             _levelConfig = configProvider.LevelsConfig;
             _view = view;
+            _pointsController = pointsController;
         }
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
@@ -51,6 +55,12 @@ namespace GameplayMechanics.Enemy
             _currentLevelSettings = _levelConfig.GetLevelSettings(level).Enemies.Nlo.Config;
             _view.Destroy().Forget();
             ResetLevelToken();
+        }
+
+        public async UniTask Destroy()
+        {
+            _levelToken.Cancel();
+            await _view.Destroy();
         }
 
         public event Action NloChanged;
@@ -76,7 +86,12 @@ namespace GameplayMechanics.Enemy
 
         private async UniTaskVoid WaitNloDie()
         {
-            await UniTask.WhenAny(_nlo.WaitDie(), _nlo.WaitInvisible());
+            var index = await UniTask.WhenAny(_nlo.WaitDie(), _nlo.WaitInvisible());
+            if (index.hasResultLeft)
+            {
+                _pointsController.AddScore(_currentLevelSettings.Score);
+            }
+
             await _view.Destroy();
             _directionToken.Cancel();
             _nlo = null;

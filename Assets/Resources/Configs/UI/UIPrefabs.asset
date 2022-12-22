@@ -17,3 +17,5 @@ MonoBehaviour:
     _path: Assets/Resources/Prefabs/UI/Windows/MainMenu.prefab
   _gameScreen:
     _path: Assets/Resources/Prefabs/UI/Windows/Game.prefab
+  _gameOverWindow:
+    _path: Assets/Resources/Prefabs/UI/Windows/GameOver.prefab

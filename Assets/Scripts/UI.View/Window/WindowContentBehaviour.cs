@@ -3,7 +3,7 @@ using UI.ViewApi.View;
 using UIModel.Window;
 using UnityEngine;
 
-namespace UIController.Screen
+namespace UI.View.Window
 {
     public class WindowContentBehaviour : MonoBehaviour, IWindowView
     {
@@ -12,12 +12,7 @@ namespace UIController.Screen
 
 
         public Action CloseWindowAction;
-        public Action<string> HeaderSetAction;
 
-        public virtual void SetHeader(string header = null)
-        {
-            HeaderSetAction?.Invoke(header ?? _headerKey);
-        }
 
         public virtual void CloseWindow()
         {

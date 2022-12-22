@@ -26,3 +26,4 @@ MonoBehaviour:
   _speed:
     _minValue: 1
     _maxValue: 4
+  _score: 35

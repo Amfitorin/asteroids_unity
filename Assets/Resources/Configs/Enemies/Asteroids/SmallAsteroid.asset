@@ -28,3 +28,4 @@ MonoBehaviour:
     _minValue: -70
     _maxValue: 70
   _type: 3
+  _score: 20

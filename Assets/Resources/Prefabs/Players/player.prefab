@@ -398,4 +398,5 @@ MonoBehaviour:
   - {fileID: 7979395439930376872}
   _baseGunRoot: {fileID: 351374324946841901}
   _extraGunRoot: {fileID: 6614395620993377960}
+  _bodyDetector: {fileID: 3839176556042354860}
   _fire: {fileID: 9100075733407650010}

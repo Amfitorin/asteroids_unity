@@ -25,6 +25,9 @@ namespace Model.Configs.Enemy
 
         [SerializeField]
         private RangeFloat _speed;
+        
+        [SerializeField]
+        private int _score;
 
         public RangeFloat ChangeDirectionDuration => _changeDirectionDuration;
 
@@ -34,6 +37,8 @@ namespace Model.Configs.Enemy
 
         public AutomaticBulletGunConfigLink Gun => _gun;
         public RangeFloat Speed => _speed;
+
+        public int Score => _score;
     }
 
     [Serializable]

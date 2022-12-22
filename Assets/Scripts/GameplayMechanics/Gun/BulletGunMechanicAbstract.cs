@@ -12,37 +12,41 @@ namespace GameplayMechanics.Gun
 {
     public abstract class BulletGunMechanicAbstract : IBulletMechanic
     {
-        protected readonly BulletGunSettings _config;
-        protected abstract Func<Vector3> DirectionFunc { get; set; }
-        protected readonly Func<Vector3> _getSpawnPoint;
-        protected readonly IBulletView _view;
-        protected bool _isCoolDown;
+        protected readonly BulletGunSettings Config;
+        protected readonly Func<Vector3> GetSpawnPoint;
+        protected readonly IBulletView View;
+        protected bool IsCoolDown;
 
         protected BulletGunMechanicAbstract(BulletGunConfig config, IBulletView view, Func<Vector3> getSpawnPoint)
         {
-            _view = view;
-            _getSpawnPoint = getSpawnPoint;
-            _config = config.Settings;
+            View = view;
+            GetSpawnPoint = getSpawnPoint;
+            Config = config.Settings;
         }
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
-            _view.SetupTokenSource(tokenSource);
+            View.SetupTokenSource(tokenSource);
         }
 
         public abstract UniTaskVoid LateUpdate();
 
+        public async UniTask Destroy()
+        {
+            await View.DestroyAllBullets();
+        }
+
         protected async UniTaskVoid StartBulletDelay()
         {
-            _isCoolDown = true;
-            await UniTask.Delay(_config.Cooldown.AsMS());
-            _isCoolDown = false;
+            IsCoolDown = true;
+            await UniTask.Delay(Config.Cooldown.AsMS());
+            IsCoolDown = false;
         }
 
         protected async UniTaskVoid StartBulletDie(IBulletComponent bullet)
         {
             var awaited = await bullet.WaitDie();
-            await _view.DestroyBullet(bullet);
+            await View.DestroyBullet(bullet);
         }
     }
 }

@@ -14,14 +14,14 @@ namespace GameplayMechanics.Gun
             DirectionFunc = getDirection;
         }
 
-        protected override Func<Vector3> DirectionFunc { get; set; }
+        protected Func<Vector3> DirectionFunc { get; set; }
 
         public override async UniTaskVoid LateUpdate()
         {
             var fire = Input.GetButtonDown("Bullet");
-            if (fire && !_isCoolDown)
+            if (fire && !IsCoolDown)
             {
-                var bullet = await _view.RunBullet(_config.Bullet, _getSpawnPoint(), DirectionFunc());
+                var bullet = await View.RunBullet(Config.Bullet, GetSpawnPoint(), DirectionFunc());
                 StartBulletDie(bullet).Forget();
                 StartBulletDelay().Forget();
             }

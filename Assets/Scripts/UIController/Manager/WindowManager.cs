@@ -3,8 +3,8 @@ using System.Linq;
 using Core.Singleton;
 using CoreMechanics.ObjectLinks.UnityObjectLink;
 using UI.View.Screen;
+using UI.View.Window;
 using UI.ViewApi.View;
-using UIController.Screen;
 using UIModel.Window;
 using UnityEngine;
 
@@ -51,7 +51,7 @@ namespace UIController.Manager
         public void OpenWindow<TView>(GameObjectLink prefab, IScreenPresenter<TView> presenter)
             where TView : class, IWindowView
         {
-            OpenWindow(null, new WindowViewData<TView>
+            OpenWindow(WindowCanvas.Current.WindowBasePrefab, new WindowViewData<TView>
             {
                 ContentPrefab = prefab,
                 Presenter = presenter
@@ -178,7 +178,6 @@ namespace UIController.Manager
             }
 
             window.WindowContentBehaviour = windowContent;
-            windowContent.HeaderSetAction = window.SetHeader;
             windowContent.CloseWindowAction = () => { CloseWindow(window); };
             windowContent.BeforeOpen(windowData);
 
@@ -206,6 +205,8 @@ namespace UIController.Manager
 
         protected override void Initialize()
         {
+            WindowCanvas.Current.CloseScreen += CloseScreen;
+            WindowCanvas.Current.CloseAllScreens += CloseAllScreens;
         }
     }
 }

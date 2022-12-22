@@ -57,6 +57,11 @@ namespace GameplayMechanics.Gun
             await UniTask.Yield();
         }
 
+        public async UniTask Destroy()
+        {
+            await UniTask.Yield();
+        }
+
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
             _globalToken = tokenSource;

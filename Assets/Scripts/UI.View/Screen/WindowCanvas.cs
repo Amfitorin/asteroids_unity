@@ -1,4 +1,5 @@
 using System;
+using CoreMechanics.ObjectLinks.UnityObjectLink;
 using UnityEngine;
 
 namespace UI.View.Screen
@@ -19,18 +20,10 @@ namespace UI.View.Screen
         [SerializeField]
         private Camera _uiCamera;
 
-        public event Action CloseScreen;
-        public event Action CloseAllScreens;
+        [SerializeField]
+        private GameObjectLink _windowBasePrefab;
 
-        public void Close()
-        {
-            CloseScreen?.Invoke();
-        }
-
-        public void CloseAll()
-        {
-            CloseAllScreens?.Invoke();
-        }
+        public GameObjectLink WindowBasePrefab => _windowBasePrefab;
 
         public static WindowCanvas Current
         {
@@ -50,5 +43,18 @@ namespace UI.View.Screen
         public Camera UICamera => _uiCamera;
 
         public Canvas Canvas => _canvas;
+
+        public event Action CloseScreen;
+        public event Action CloseAllScreens;
+
+        public void Close()
+        {
+            CloseScreen?.Invoke();
+        }
+
+        public void CloseAll()
+        {
+            CloseAllScreens?.Invoke();
+        }
     }
 }

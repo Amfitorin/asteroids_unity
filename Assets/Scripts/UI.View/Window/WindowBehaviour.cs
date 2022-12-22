@@ -2,22 +2,15 @@ using Core.Utils.Extensions;
 using JetBrains.Annotations;
 using TMPro;
 using UI.View.Screen;
-using UIController.Manager;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UIController.Screen
+namespace UI.View.Window
 {
     public class WindowBehaviour : WindowBase
     {
         [SerializeField]
         private Transform _container;
-
-        [SerializeField]
-        private GameObject _header;
-
-        [SerializeField]
-        private TextMeshProUGUI _headerText;
 
         [SerializeField]
         private Image _windowBack;
@@ -33,21 +26,10 @@ namespace UIController.Screen
             if (_windowBack != null) _windowBack.color = Color.gray;
         }
 
-        public void SetHeader(string header)
-        {
-            if (header.IsNullOrEmpty())
-            {
-                _header.SetActive(false);
-                return;
-            }
-
-            _headerText.text = header;
-        }
-
         [UsedImplicitly]
         public void CloseWindow()
         {
-            WindowManager.Instance.CloseWindow(this);
+            WindowCanvas.Current.Close();
         }
     }
 }

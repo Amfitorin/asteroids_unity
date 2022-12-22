@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.Gameplay;
 using MechanicsApi.Enemy;
+using MechanicsApi.Gameplay;
 using Model.Configs;
 
 namespace GameplayMechanics.Enemy
@@ -13,10 +14,10 @@ namespace GameplayMechanics.Enemy
         private readonly INloMechanic _nloMechanic;
 
         public EnemyMechanic(IGameplayController controller, CancellationTokenSource tokenSource,
-            IConfigProvider provider)
+            IConfigProvider provider, IPointsController points)
         {
-            _asteroidsMechanic = new AsteroidMechanic(controller, provider, controller.AsteroidsView);
-            _nloMechanic = new NloMechanic(controller, provider, controller.NloView);
+            _asteroidsMechanic = new AsteroidMechanic(controller, provider, controller.AsteroidsView, points);
+            _nloMechanic = new NloMechanic(controller, provider, controller.NloView, points);
         }
 
         public async UniTask StartGame()
@@ -31,6 +32,12 @@ namespace GameplayMechanics.Enemy
         {
             _asteroidsMechanic.SetupLevel(level);
             _nloMechanic.SetupLevel(level);
+        }
+
+        public async UniTask Destroy()
+        {
+            await _asteroidsMechanic.Destroy();
+            await _nloMechanic.Destroy();
         }
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)

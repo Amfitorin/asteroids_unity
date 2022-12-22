@@ -1,3 +1,4 @@
+using TMPro;
 using UI.View.Screen;
 using UI.ViewApi.Game;
 using UIModel.Window;
@@ -12,6 +13,9 @@ namespace UI.View.Game
 
         [SerializeField]
         private LevelInfo _level;
+
+        [SerializeField]
+        private TextMeshProUGUI _score;
 
         public override void BeforeOpen(WindowData windowData)
         {
@@ -71,6 +75,11 @@ namespace UI.View.Game
         public void LaserCancelled()
         {
             _laser.CancelUse();
+        }
+
+        public void SetScore(int score)
+        {
+            _score.text = $"Current score: {score}";
         }
 
 

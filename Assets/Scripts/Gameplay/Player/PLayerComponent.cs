@@ -1,11 +1,14 @@
 using System;
 using System.Linq;
+using System.Threading;
 using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using DG.Tweening;
 using DoTween.Modules;
 using Gameplay.Gun;
 using Gameplay.ViewApi.Gun;
+using Gameplay.ViewApi.Player;
 using Model.Configs.Player;
 using UnityEngine;
 
@@ -22,12 +25,19 @@ namespace Gameplay.Player
         [SerializeField]
         private Transform _extraGunRoot;
 
-        private IObjectSpawnSystem _spawnSystem;
+        [SerializeField]
+        private GameObject _bodyDetector;
 
         [SerializeField]
         private SpriteRenderer _fire;
 
+        private GunComponent _baseGun;
+        private GunComponent _extraGun;
+
         private ILaserComponent _laser;
+        private CancellationTokenSource _lifeToken;
+
+        private IObjectSpawnSystem _spawnSystem;
 
         public Transform BulletRoot { get; private set; }
         public Transform LaserRoot { get; private set; }
@@ -72,6 +82,7 @@ namespace Gameplay.Player
             _fire.transform.DOScaleY(percent, 0.1f);
         }
 
+        public Transform Transform => transform;
 
         public async UniTask Init(PLayerConfig config, IObjectSpawnSystem spawnSystem)
         {
@@ -83,13 +94,28 @@ namespace Gameplay.Player
                     baseGunPrefab, _baseGunRoot, Vector3.zero),
                 _spawnSystem.SpawnObject<GunComponent>(
                     extraGunPrefab, _extraGunRoot, Vector3.zero));
-            var baseGun = guns.Item1;
-            baseGun.transform.localPosition = baseGunPrefab.Resource.transform.localPosition;
-            BulletRoot = baseGun.BulletRoot;
-            var extraGun = guns.Item2;
-            extraGun.transform.localPosition = extraGunPrefab.Resource.transform.localPosition;
-            LaserRoot = extraGun.BulletRoot;
-            _laser = extraGun.GetComponentInChildren<ILaserComponent>(true);
+            _baseGun = guns.Item1;
+            _baseGun.transform.localPosition = baseGunPrefab.Resource.transform.localPosition;
+            BulletRoot = _baseGun.BulletRoot;
+            _extraGun = guns.Item2;
+            _extraGun.transform.localPosition = extraGunPrefab.Resource.transform.localPosition;
+            LaserRoot = _extraGun.BulletRoot;
+            _laser = _extraGun.GetComponentInChildren<ILaserComponent>(true);
+            _lifeToken = new CancellationTokenSource();
+
+            WaitDie().Forget();
+        }
+
+        public async UniTask Destroy()
+        {
+            await UniTask.WhenAll(_spawnSystem.DestroyObject(_baseGun), _spawnSystem.DestroyObject(_extraGun));
+        }
+
+        private async UniTaskVoid WaitDie()
+        {
+            var asyncTriggerEnter = _bodyDetector.GetAsyncTriggerEnter2DTrigger();
+            await asyncTriggerEnter.OnTriggerEnter2DAsync(_lifeToken.Token);
+            OnDied?.Invoke();
         }
     }
 }

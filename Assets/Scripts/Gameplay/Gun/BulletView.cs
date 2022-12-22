@@ -42,6 +42,12 @@ namespace Gameplay.Gun
             await _spawnSystem.DestroyObject(bulletGun);
         }
 
+        public async UniTask DestroyAllBullets()
+        {
+            await UniTask.WhenAll(_bullets.Select(DestroyBullet));
+            _bullets.Clear();
+        }
+
         public void SetupTokenSource(CancellationTokenSource tokenSource)
         {
             _tokenSource = tokenSource;

@@ -5,7 +5,9 @@ using CoreMechanics.Systems;
 using Cysharp.Threading.Tasks;
 using Gameplay.App;
 using Gameplay.Gameplay;
+using Gameplay.ViewApi.Gameplay;
 using GameplayMechanics.MainMechanic;
+using MechanicsApi.App;
 using MechanicsApi.Gameplay;
 using Model.Configs;
 using UIController.Manager;
@@ -22,6 +24,7 @@ namespace GameplayMechanics.App
         private readonly IObjectSpawnSystem _spawnSystem;
 
         private IMainMechanic _mainMechanic;
+        private IGameplayController _controller;
 
         public AppController(IAppEventProvider eventProvider, ISceneController sceneController,
             IConfigProvider configProvider)
@@ -42,12 +45,17 @@ namespace GameplayMechanics.App
         public async UniTask StartGame()
         {
             await SceneController.LoadMainSceneAsync();
-            var controller = Object.FindObjectOfType<GameplayController>();
-            controller.SetupSpawnSystem(_spawnSystem);
-            _mainMechanic = new GameplayMechanic(this, controller, _configProvider);
+            _controller = Object.FindObjectOfType<GameplayController>();
+            _controller.SetupSpawnSystem(_spawnSystem);
             await SceneController.LoadScreenSceneAsync();
             WindowManager.Instance.OpenScreen(_configProvider.UIPrefabs.MainMenuScreen,
-                new MainMenuPresenter(_mainMechanic, _configProvider.UIPrefabs));
+                new MainMenuPresenter(this, _configProvider.UIPrefabs));
+        }
+
+        public async UniTask NewGame()
+        {
+            _mainMechanic = new GameplayMechanic(this, _controller, _configProvider);
+            await _mainMechanic.StartGame();
         }
     }
 }

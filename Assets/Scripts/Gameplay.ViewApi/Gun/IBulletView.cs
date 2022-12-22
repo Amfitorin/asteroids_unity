@@ -11,5 +11,7 @@ namespace Gameplay.ViewApi.Gun
             Vector3 direction);
 
         UniTask DestroyBullet(IBulletComponent bullet);
+
+        UniTask DestroyAllBullets();
     }
 }

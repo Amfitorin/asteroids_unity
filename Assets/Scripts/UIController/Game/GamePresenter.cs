@@ -16,6 +16,7 @@ namespace UIController.Game
     {
         private readonly IAsteroidMechanic _asteroids;
         private readonly IMainMechanic _mainMechanic;
+        private readonly IPointsController _points;
         private readonly INloMechanic _nlo;
         private readonly IPlayerMechanic _playerMechanic;
         private readonly CancellationTokenSource _screenToken;
@@ -26,12 +27,13 @@ namespace UIController.Game
         private IGameView _view;
 
         public GamePresenter(IPlayerMechanic playerMechanic, IAsteroidMechanic asteroids, INloMechanic nlo,
-            IMainMechanic mainMechanic)
+            IMainMechanic mainMechanic, IPointsController points)
         {
             _playerMechanic = playerMechanic;
             _asteroids = asteroids;
             _nlo = nlo;
             _mainMechanic = mainMechanic;
+            _points = points;
             _screenToken = new CancellationTokenSource();
         }
 
@@ -45,14 +47,21 @@ namespace UIController.Game
             _view.SetupLevel(_mainMechanic.CurrentLevel);
             _view.SetCharges(_playerMechanic.Laser.ChargesCount);
             _view.TimeUse(0f);
+            _view.SetScore(_points.Score);
 
-           
+
             _nlo.NloChanged += OnNloChanged;
             _mainMechanic.LevelChanged += OnLevelChanged;
             _playerMechanic.Laser.ChargesChanged += OnChargesChanged;
             _playerMechanic.Laser.UseProgress += OnUseProgress;
             _playerMechanic.Laser.CooldownProgress += OnCooldownProgress;
             _playerMechanic.Laser.LaserCancelled += OnLaserCancelled;
+            _points.ScoreChanged += OnScoreChanged;
+        }
+
+        private void OnScoreChanged()
+        {
+            _view.SetScore(_points.Score);
         }
 
         public void OnClose(IGameView view)
@@ -66,6 +75,7 @@ namespace UIController.Game
             _playerMechanic.Laser.UseProgress -= OnUseProgress;
             _playerMechanic.Laser.CooldownProgress -= OnCooldownProgress;
             _playerMechanic.Laser.LaserCancelled -= OnLaserCancelled;
+            _points.ScoreChanged -= OnScoreChanged;
         }
 
         private void OnCooldownProgress(float current, float total)
@@ -147,7 +157,7 @@ namespace UIController.Game
             {
                 ChangeAsteroidsCount(component.SpawnData.Config.Type, 1);
             }
-            
+
             UpdateAsteroidsCount();
         }
 

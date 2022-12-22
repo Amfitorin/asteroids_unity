@@ -23,7 +23,7 @@ namespace GameplayMechanics.PLayers
         private float _currentMaxSpeed;
         private Vector3 _direction = Vector3.zero;
         private ILaserMechanic _extraGunMechanic;
-        private Transform _playerTransform;
+        private IPlayerComponent _player;
         private Vector3 _slowDirection;
         private float _slowTime;
 
@@ -36,20 +36,27 @@ namespace GameplayMechanics.PLayers
             _playerConfig = provider.PLayerConfig;
             _cameraView = controller.Camera;
             _baseGunMechanic = new BulletMechanic(provider.PLayerConfig.BulletGun, controller.BulletView, BaseGunPoint,
-                () => _playerTransform.up.normalized);
+                () => _player.Transform.up.normalized);
             _extraGunMechanic = new LaserMechanic(provider.PLayerConfig.LaserGun, controller.LaserView, tokenSource);
         }
 
         public async UniTask StartGame()
         {
-            _playerTransform = await _playerView.SpawnPLayer(_playerConfig, _cameraView.ScreenCenter);
+            _player = await _playerView.SpawnPLayer(_playerConfig, _cameraView.ScreenCenter);
+            _player.OnDied += OnOnDied;
+
             _extraGunMechanic.Init(_playerView.Laser, _playerView.ExtraGunTransform());
             _playerView.ApplySpeed(0f);
         }
 
+        public async UniTask Destroy()
+        {
+            await UniTask.Yield();
+        }
+
         public ILaserMechanic Laser => _extraGunMechanic;
         public event Action Died;
-        public Transform PlayerTransform => _playerTransform;
+        public Transform PlayerTransform => _player.Transform;
         public float CurrentSpeed => _speed;
 
         public void SetupTokenSource(CancellationTokenSource tokenSource)
@@ -67,7 +74,7 @@ namespace GameplayMechanics.PLayers
                 _playerView.AddRotation(angle);
             }
 
-            Vector3 position = _playerTransform.position;
+            Vector3 position = _player.Transform.position;
             CornerRect cornerRect = _playerView.GetBounds();
             var posChanged = false;
             if (!_cameraView.IsObjectVisible(cornerRect))
@@ -80,7 +87,7 @@ namespace GameplayMechanics.PLayers
             if (drive > 0.1f)
             {
                 _slowTime = 0f;
-                var forward = _playerTransform.up.normalized;
+                var forward = _player.Transform.up.normalized;
                 _speed = Mathf.Clamp(_speed + _playerConfig.Acceleration * Time.deltaTime, 0f,
                     _playerConfig.MaxSpeed);
                 if (_direction == Vector3.zero)
@@ -118,6 +125,17 @@ namespace GameplayMechanics.PLayers
             _extraGunMechanic.LateUpdate().Forget();
 
             await UniTask.Yield();
+        }
+
+        private void OnOnDied()
+        {
+            StartPlayerDestroy().Forget();
+        }
+
+        private async UniTaskVoid StartPlayerDestroy()
+        {
+            await _playerView.Despawn();
+            Died?.Invoke();
         }
 
         private Vector3 BaseGunPoint()

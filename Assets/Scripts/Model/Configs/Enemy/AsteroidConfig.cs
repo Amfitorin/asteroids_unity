@@ -31,6 +31,10 @@ namespace Model.Configs.Enemy
 
         [SerializeField]
         private AsteroidType _type;
+
+        [SerializeField]
+        private int _score;
+
         public RangeFloat AngleSpeed => _angleSpeed;
 
         public AsteroidConfigLink Shard => _shard;
@@ -44,6 +48,7 @@ namespace Model.Configs.Enemy
         public SpriteLink[] Sprites => _sprites;
 
         public AsteroidType Type => _type;
+        public int Score => _score;
     }
 
     [Serializable]

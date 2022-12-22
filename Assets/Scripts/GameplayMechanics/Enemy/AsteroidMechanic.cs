@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Gameplay.ViewApi.Enemy;
 using Gameplay.ViewApi.Gameplay;
 using MechanicsApi.Enemy;
+using MechanicsApi.Gameplay;
 using Model.Configs;
 using Model.Configs.Level;
 using Model.EnvObject;
@@ -20,13 +21,16 @@ namespace GameplayMechanics.Enemy
         private readonly IGameplayController _controller;
         private readonly LevelsConfig _levelConfig;
         private readonly IAsteroidsView _view;
+        private readonly IPointsController _pointsController;
         private List<IAsteroidComponent> _asteroids = new();
         private LevelSettings _currentLevelSettings;
 
-        public AsteroidMechanic(IGameplayController controller, IConfigProvider configProvider, IAsteroidsView view)
+        public AsteroidMechanic(IGameplayController controller, IConfigProvider configProvider, IAsteroidsView view,
+            IPointsController pointsController)
         {
             _controller = controller;
             _view = view;
+            _pointsController = pointsController;
             _levelConfig = configProvider.LevelsConfig;
         }
 
@@ -45,6 +49,11 @@ namespace GameplayMechanics.Enemy
         {
             _currentLevelSettings = _levelConfig.GetLevelSettings(level);
             _view.DestroyAsteroids();
+        }
+
+        public async UniTask Destroy()
+        {
+            await _view.DestroyAsteroids();
         }
 
         public event Action<IAsteroidComponent> AsteroidDie;
@@ -110,6 +119,8 @@ namespace GameplayMechanics.Enemy
             {
                 await SpawnShards(awaitedResult, spawnData);
             }
+
+            _pointsController.AddScore(spawnData.Config.Score);
 
             AsteroidDie?.Invoke(asteroidComponent);
         }
