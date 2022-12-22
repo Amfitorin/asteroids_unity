@@ -30,12 +30,10 @@ namespace GameplayMechanics.App
             SceneController = sceneController;
             AppEventProvider = eventProvider;
             var pool = new ObjectPool();
-            if (Application.isEditor)
-            {
-                _spawnSystem =
-                    new ObjectSpawnSystem(
-                        configProvider.PoolSettings != null ? configProvider.PoolSettings.Elements : null, pool);
-            }
+
+            _spawnSystem =
+                new ObjectSpawnSystem(
+                    configProvider.PoolSettings != null ? configProvider.PoolSettings.Elements : null, pool);
         }
 
         public ISceneController SceneController { get; }
